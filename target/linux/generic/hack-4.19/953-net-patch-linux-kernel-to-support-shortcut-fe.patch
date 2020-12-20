@@ -52,7 +52,7 @@
  	bool
 +
 +config SHORTCUT_FE
-+	bool "Enables kernel network stack path for Shortcut  Forwarding Engine
++	bool "Enables kernel network stack path for Shortcut  Forwarding Engine"
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
 @@ -3249,8 +3249,17 @@ static int xmit_one(struct sk_buff *skb,
