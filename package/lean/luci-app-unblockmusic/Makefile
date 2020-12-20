@@ -1,34 +1,82 @@
-# Copyright (C) 2020 Openwrt.org
-#
-# This is free software, licensed under the Apache License, Version 2.0 .
-#
-#
-
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-unblockmusic
 PKG_VERSION:=2.3.5
 PKG_RELEASE:=10
 
-PKG_CONFIG_DEPENDS := \
-	CONFIG_UnblockNeteaseMusic_Go \
-	CONFIG_UnblockNeteaseMusic_NodeJS
 
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)/config
-  source "$(SOURCE)/Config.in"
+menu "Configuration"
+
+config UnblockNeteaseMusic_Go
+	bool "UnblockNeteaseMusic Golang Version"
+	default y if i386||x86_64||arm||aarch64
+
+config UnblockNeteaseMusic_NodeJS
+	bool "UnblockNeteaseMusic NodeJS Version"
+	depends on HAS_FPU || KERNEL_MIPS_FPU_EMULATOR
+	default y if i386||x86_64||arm||aarch64
+
+endmenu
 endef
 
-PKG_LICENSE:=Apache-2.0
+PKG_CONFIG_DEPENDS := \
+	CONFIG_UnblockNeteaseMusic_Go \
+	CONFIG_UnblockNeteaseMusic_NodeJS
 
-LUCI_TITLE:=LuCI support for Unblock NeteaseCloudMusic
-LUCI_DEPENDS:=+dnsmasq-full +ipset +wget +UnblockNeteaseMusic_NodeJS:UnblockNeteaseMusic +UnblockNeteaseMusic_Go:UnblockNeteaseMusicGo
-LUCI_PKGARCH:=all
+define Package/$(PKG_NAME)
+ 	SECTION:=luci
+	CATEGORY:=LuCI
+	SUBMENU:=3. Applications
+	TITLE:=LuCI support for Unblock NeteaseCloudMusic
+	PKGARCH:=all
+	DEPENDS:=+dnsmasq-full +ipset +wget +UnblockNeteaseMusic_NodeJS:UnblockNeteaseMusic +UnblockNeteaseMusic_Go:UnblockNeteaseMusicGo
+endef
 
-PKG_MAINTAINER:=lean
+define Build/Prepare
+endef
 
-include $(TOPDIR)/feeds/luci/luci.mk
+define Build/Compile
+endef
 
-# call BuildPackage - OpenWrt buildroot signature
+define Package/$(PKG_NAME)/conffiles
+	/etc/config/unblockmusic
+endef
+
+define Package/$(PKG_NAME)/install
+	
+	$(INSTALL_DIR) $(1)/usr/lib/lua/luci
+	cp -pR ./luasrc/* $(1)/usr/lib/lua/luci
+
+	$(INSTALL_DIR) $(1)/
+	cp -pR ./root/* $(1)/
+	
+	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/i18n
+	po2lmo ./po/zh-cn/unblockmusic.po $(1)/usr/lib/lua/luci/i18n/unblockmusic.zh-cn.lmo
+endef
+
+define Package/$(PKG_NAME)/postinst
+#!/bin/sh
+if [ -z "$${IPKG_INSTROOT}" ]; then
+	( . /etc/uci-defaults/unblockmusic ) && rm -f /etc/uci-defaults/unblockmusic
+	rm -rf /tmp/luci-indexcache
+	rm -rf /tmp/luci-modulecache/*
+	chmod 755 /etc/init.d/unblockmusic >/dev/null 2>&1
+	/etc/init.d/unblockmusic enable >/dev/null 2>&1
+fi
+exit 0
+endef
+
+define Package/$(PKG_NAME)/prerm
+#!/bin/sh
+if [ -z "$${IPKG_INSTROOT}" ]; then
+     /etc/init.d/unblockmusic disable
+     /etc/init.d/unblockmusic stop
+fi
+exit 0
+endef
+
+$(eval $(call BuildPackage,$(PKG_NAME)))
 
