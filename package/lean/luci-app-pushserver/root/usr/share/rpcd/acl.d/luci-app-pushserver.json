@@ -1,0 +1,11 @@
+{
+	"luci-app-pushserver": {
+		"description": "Grant UCI access for luci-app-pushserver",
+		"read": {
+			"uci": [ "pushserver" ]
+		},
+		"write": {
+			"uci": [ "pushserver" ]
+		}
+	}
+}
