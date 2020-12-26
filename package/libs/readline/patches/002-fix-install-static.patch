@@ -1,0 +1,13 @@
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -251,10 +251,8 @@
+ maybe-uninstall-pc: uninstall-pc
+ 
+ install-static: installdirs $(STATIC_LIBS) install-headers install-doc ${install_examples} install-pc
+-	-$(MV) $(DESTDIR)$(libdir)/libreadline.a $(DESTDIR)$(libdir)/libreadline.old
+ 	$(INSTALL_DATA) libreadline.a $(DESTDIR)$(libdir)/libreadline.a
+ 	-test -n "$(RANLIB)" && $(RANLIB) $(DESTDIR)$(libdir)/libreadline.a
+-	-$(MV) $(DESTDIR)$(libdir)/libhistory.a $(DESTDIR)$(libdir)/libhistory.old
+ 	$(INSTALL_DATA) libhistory.a $(DESTDIR)$(libdir)/libhistory.a
+ 	-test -n "$(RANLIB)" && $(RANLIB) $(DESTDIR)$(libdir)/libhistory.a
+ 
