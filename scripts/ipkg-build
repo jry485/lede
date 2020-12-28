@@ -66,8 +66,6 @@ pkg_appears_sane() {
 		    for cf in `$FIND $item -type f`; do
 			echo "${cf#$pkg_dir}" >> $CONTROL/conffiles.resolved
 		    done
-	    	else
-	    	     echo "${item#$pkg_dir}" >> $CONTROL/conffiles.resolved		
 		fi
 		done
 
