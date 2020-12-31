@@ -1,0 +1,23 @@
+--- a/uhttpd.h	2020-11-23 09:06:02.000000000 +0800
++++ b/uhttpd.h	2020-12-31 17:26:18.362058891 +0800
+@@ -127,7 +127,7 @@
+ 	enum http_version version;
+ 	enum http_user_agent ua;
+ 	int redirect_status;
+-	int content_length;
++	long long content_length;
+ 	bool expect_cont;
+ 	bool connection_close;
+ 	bool disable_chunked;
+
+--- a/client.c	2020-11-23 09:06:02.000000000 +0800
++++ b/client.c	2020-12-31 17:25:30.512689767 +0800
+@@ -345,7 +345,7 @@
+ 			return;
+ 		}
+ 	} else if (!strcmp(data, "content-length")) {
+-		r->content_length = strtoul(val, &err, 0);
++		r->content_length = strtoull(val, &err, 0);
+ 		if ((err && *err) || r->content_length < 0) {
+ 			uh_header_error(cl, 400, "Bad Request");
+ 			return;
