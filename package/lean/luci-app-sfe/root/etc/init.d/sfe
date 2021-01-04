@@ -152,6 +152,7 @@ start_service() {
 	ipv6=$(uci get sfe.config.ipv6)
 	dns=$(uci get sfe.config.dns 2>/dev/null)
 	bbr=$(uci get sfe.config.bbr 2>/dev/null)
+	fullcone=$(uci get sfe.config.fullcone 2>/dev/null)
 
 	if [ $enable -eq 1 ]; then
 		! (lsmod | grep fast_classifier >/dev/null) && (modprobe fast_classifier)
@@ -181,6 +182,17 @@ start_service() {
 	else
 		revert_dns
 	fi
+	
+	if [ $fullcone -eq 1 ]; then
+		uci set firewall.@defaults[-1].fullcone=1	
+		uci commit firewall
+		/etc/init.d/firewall restart
+	else
+		uci set firewall.@defaults[-1].fullcone=0	
+		uci commit firewall
+		/etc/init.d/firewall restart	
+	fi
+
 
 	if [ $bbr -eq 1 ]; then
 		sysctl -w net.ipv4.tcp_congestion_control=bbr

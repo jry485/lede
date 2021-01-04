@@ -44,4 +44,9 @@ o.default = "114.114.114.114,114.114.115.115"
 o.description = translate("Muitiple DNS server can saperate with ','")
 o:depends("dns", 1)
 
+fullcone= s:option(Flag, "fullcone", translate("FullCone-NAT"))
+fullcone.default = 0
+fullcone.rmempty = false
+fullcone.description = translate("Enable FullCone-NAT")
+
 return m

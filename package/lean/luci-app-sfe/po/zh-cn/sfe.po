@@ -51,3 +51,10 @@ msgstr "上游 DNS 服务器(国内)"
 
 msgid "Muitiple DNS server can saperate with ','"
 msgstr "支持多个上游DNS服务器，用','分隔（注意用英文逗号).请填写您最快的DNS服务器"
+
+msgid "FullCone-NAT"
+msgstr "FullCone-NAT 加速"
+
+msgid "Enable FullCone-NAT"
+msgstr "启用 FullCone-NAT"
+
