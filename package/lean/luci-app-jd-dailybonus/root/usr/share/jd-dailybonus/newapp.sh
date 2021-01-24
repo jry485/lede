@@ -49,159 +49,106 @@ cancel() {
     exit 1
 }
 
-REMOTE_SCRIPT=$(uci_get_by_type global remote_url)
-
-fill_cookie() {
-    cookie1=$(uci_get_by_type global cookie)
-    if [ ! "$cookie1" = "" ]; then
-        varb="var Key = '$cookie1';"
-        a=$(sed -n '/var Key =/=' $JD_SCRIPT)
-        b=$((a-1))
-        sed -i "${a}d" $JD_SCRIPT
-        sed -i "${b}a ${varb}" $JD_SCRIPT
-    fi
-
-    cookie2=$(uci_get_by_type global cookie2)
-    if [ ! "$cookie2" = "" ]; then
-        varb2="var DualKey = '$cookie2';"
-        aa=$(sed -n '/var DualKey =/=' $JD_SCRIPT)
-        bb=$((aa-1))
-        sed -i "${aa}d" $JD_SCRIPT
-        sed -i "${bb}a ${varb2}" $JD_SCRIPT
-    fi
-
-    stop=$(uci_get_by_type global stop)
-    if [ ! "$stop" = "" ]; then
-        varb3="var stop = $stop;"
-        sed -i "s/^var stop =.*/$varb3/g" $JD_SCRIPT
-    fi
-}
-
-if [ -e $TEMP_SCRIPT ]; then
-    remote_ver=$(cat $TEMP_SCRIPT | sed -n '/更新时间/p' | awk '{for (i=1;i<=NF;i++){if ($i ~/v/) {print $i}}}' | sed 's/v//')
-else
-    remote_ver=$(cat $JD_SCRIPT | sed -n '/更新时间/p' | awk '{for (i=1;i<=NF;i++){if ($i ~/v/) {print $i}}}' | sed 's/v//')
-fi
-local_ver=$(uci_get_by_type global version)
-
 add_cron() {
-if [ $(uci_get_by_type global jd_enable 0) -eq 1 ]; then
     sed -i '/jd-dailybonus/d' $CRON_FILE
-    [ $(uci_get_by_type global auto_run 0) -eq 1 ] && echo '5 '$(uci_get_by_type global auto_run_time)' * * * sleep '$(expr $(head -n 128 /dev/urandom | tr -dc "0123456789" | head -c4) % 180)'s; /usr/share/jd-dailybonus/newapp.sh -w' >>$CRON_FILE
+    [ $(uci_get_by_type global auto_run 0) -eq 1 ] && echo $(uci_get_by_type global auto_run_time_m)' '$(uci_get_by_type global auto_run_time_h)' * * * /usr/share/jd-dailybonus/newapp.sh -w' >>$CRON_FILE
     [ $(uci_get_by_type global auto_update 0) -eq 1 ] && echo '1 '$(uci_get_by_type global auto_update_time)' * * * /usr/share/jd-dailybonus/newapp.sh -u' >>$CRON_FILE
     crontab $CRON_FILE
-else
-    sed -i '/jd-dailybonus/d' $CRON_FILE
-    crontab $CRON_FILE
-fi
+    /etc/init.d/cron restart
 }
 
 # Run Script
 
-serverchan() {
-   
-    failed=$(uci_get_by_type global failed)
-
-    if [ $1 -eq 0 ]; then
-	desc="接口测试通过"
+notify() {
+    grep "Cookie失效" /www/JD_DailyBonus.htm >/dev/null
+    if [ $? -eq 0 ]; then
+        title="$(date '+%Y年%m月%d日') 京东签到 Cookie 失效"
     else
-	desc=$(cat /www/JD_DailyBonus.htm | grep -E '签到号|签到概览|签到总计|账号总计|其他总计' | sed 's/$/&\n/g')
-    fi	   
-    serverurlflag=$(uci_get_by_type global serverurl)
-
-    if [ "$serverurlflag" = "scu" ]; then
- 	sckey=$(uci_get_by_type global serverchan)
+        title="$(date '+%Y年%m月%d日') 京东签到"
+    fi
+    desc=$(cat /www/JD_DailyBonus.htm | grep -E '签到号|签到概览|签到奖励|其他奖励|账号总计|其他总计' | sed 's/$/&\n/g')
+    #serverchan
+    sckey=$(uci_get_by_type global serverchan)
+    if [ ! -z $sckey ]; then
+        serverurlflag=$(uci_get_by_type global serverurl)
         serverurl=https://sc.ftqq.com/
-        if [ $failed -eq 1 ]; then
-        grep "Cookie失效" /www/JD_DailyBonus.htm > /dev/null
-        if [ $? -eq 0 ]; then
-            title="$(date '+%Y年%m月%d日') 京东签到 Cookie 失效"
-            wget-ssl -q --output-document=/dev/null --post-data="text=$title~&desp=$desc" $serverurl$sckey.send
-
+        if [ "$serverurlflag" = "sct" ]; then
+            serverurl=https://sctapi.ftqq.com/
         fi
-    	else
-            title="$(date '+%Y年%m月%d日') 京东签到"
-       	    wget-ssl -q --output-document=/dev/null --post-data="text=$title~&desp=$desc" $serverurl$sckey.send
+        wget-ssl -q --output-document=/dev/null --post-data="text=$title~&desp=$desc" $serverurl$sckey.send
+    fi
 
-    	fi
-    else
-	sckey=$(uci_get_by_type global dingding)
-        if [ $failed -eq 1 ]; then
-        grep "Cookie失效" /www/JD_DailyBonus.htm > /dev/null
-      	if [ $? -eq 0 ]; then
-          send_title="$(date '+%Y年%m月%d日') 京东签到 Cookie 失效"
-	  #dingtalk_send="curl -s \"https://oapi.dingtalk.com/robot/send?access_token=${sckey}\" -H 'Content-Type: application/json' -d '{\"msgtype\": \"markdown\",\"markdown\": {\"title\":\"${send_title}\",\"text\":\"${nowtime}${desc}\"}}'"     
-          #eval $dingtalk_send >/dev/null 2>&1
-	  wget-ssl -q --output-document=/dev/null --header="Content-Type:application/json" --post-data="{\"msgtype\":\"markdown\",\"markdown\":{\"title\":\"${send_title}\",\"text\":\"${nowtime}${desc}\"}}" https://oapi.dingtalk.com/robot/send?access_token=${sckey}
-        fi
-    	else
-           send_title="$(date '+%Y年%m月%d日') 京东签到"
-       	   #dingtalk_send="curl -s \"https://oapi.dingtalk.com/robot/send?access_token=${sckey}\" -H 'Content-Type: application/json' -d '{\"msgtype\": \"markdown\",\"markdown\": {\"title\":\"${send_title}\",\"text\":\"${nowtime}${desc}\"}}'"     
-           #eval $dingtalk_send >/dev/null 2>&1
-	   wget-ssl -q --output-document=/dev/null --header="Content-Type:application/json" --post-data="{\"msgtype\":\"markdown\",\"markdown\":{\"title\":\"${send_title}\",\"text\":\"${nowtime}${desc}\"}}" https://oapi.dingtalk.com/robot/send?access_token=${sckey}
-    	fi
+    #telegram
+    TG_BOT_TOKEN=$(uci_get_by_type global tg_token)
+    TG_USER_ID=$(uci_get_by_type global tg_userid)
+    API_URL="https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage"
+    if [ ! -z $TG_BOT_TOKEN ] && [ ! -z $TG_USER_ID ]; then
+        text="*$title*
+        
+\`\`\`
+"$desc"
+====================================
+本消息来自京东签到插件 jd-dailybonus
+\`\`\`"
+        wget-ssl -q --output-document=/dev/null --post-data="chat_id=$TG_USER_ID&text=$text&parse_mode=markdownv2" $API_URL
     fi
 }
 
-check_serverchan(){
-	serverchan 0
-}
-
 run() {
-    fill_cookie
     echo -e $(date '+%Y-%m-%d %H:%M:%S %A') >$LOG_HTM 2>/dev/null
-    [ ! -f "/usr/bin/node" ] && echo "未安装node,请安装后再试!">>$LOG_HTM && exit 1
-    node $JD_SCRIPT >>$LOG_HTM 2>&1 &
-}
-
-back_run() {
-    fill_cookie
-    echo -e $(date '+%Y-%m-%d %H:%M:%S %A') >$LOG_HTM 2>/dev/null
-    [ ! -f "/usr/bin/node" ] && echo "未安装node,请安装后再试!">>$LOG_HTM && exit 1
-    node $JD_SCRIPT >>$LOG_HTM 2>/dev/null
-    serverchan 1
+    [ ! -f "/usr/bin/node" ] && echo -e "未安装node.js,请安装后再试!\nNode.js is not installed, please try again after installation!" >>$LOG_HTM && exit 1
+    node $JD_SCRIPT >>$LOG_HTM 2>/dev/null && notify &
 }
 
 save() {
-    fill_cookie
     add_cron
 }
 
 # Update Script From Server
+download() {
+    REMOTE_SCRIPT=$(uci_get_by_type global remote_url)
+    wget-ssl --user-agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36" --no-check-certificate -t 3 -T 10 -q $REMOTE_SCRIPT -O $TEMP_SCRIPT
+    return $?
+}
+
+get_ver() {
+    echo $(cat $1 | sed -n '/更新时间/p' | awk '{for (i=1;i<=NF;i++){if ($i ~/v/) {print $i}}}' | sed 's/v//')
+}
 
 check_ver() {
-    wget-ssl --user-agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36" --no-check-certificate -t 3 -T 10 -q $REMOTE_SCRIPT -O $TEMP_SCRIPT
+    download
     if [ $? -ne 0 ]; then
         cancel "501"
     else
-        echo $remote_ver
+        echo $(get_ver $TEMP_SCRIPT)
     fi
 }
 
 update() {
-    wget-ssl --user-agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36" --no-check-certificate -t 3 -T 10 -q $REMOTE_SCRIPT -O $TEMP_SCRIPT
+    download
     if [ $? -ne 0 ]; then
         cancel "501"
     fi
-    if [ $(expr $local_ver \< $remote_ver) -eq 1 ]; then
-        cp -r $TEMP_SCRIPT $JD_SCRIPT
-        fill_cookie
-        uci set jd-dailybonus.@global[0].version=$remote_ver
-        uci commit jd-dailybonus
-        cancel "0"
+    if [ -e $JD_SCRIPT ]; then
+        local_ver=$(get_ver $JD_SCRIPT)
     else
-        cancel "101"
+        local_ver=0
     fi
+    remote_ver=$(get_ver $TEMP_SCRIPT)
+    cp -r $TEMP_SCRIPT $JD_SCRIPT
+    uci set jd-dailybonus.@global[0].version=$remote_ver
+    uci commit jd-dailybonus
+    cancel "0"
 }
 
-while getopts ":alnruswhm" arg; do
+while getopts ":alnruswh" arg; do
     case "$arg" in
     a)
         add_cron
         exit 0
         ;;
     l)
-        serverchan
+        notify
         exit 0
         ;;
     n)
@@ -221,13 +168,9 @@ while getopts ":alnruswhm" arg; do
         exit 0
         ;;
     w)
-        back_run
+        run
         exit 0
         ;;
-    m)
-        check_serverchan
-	exit 0
-	;;
     h)
         usage 0
         ;;
