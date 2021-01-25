@@ -1,0 +1,11 @@
+{
+    "luci-jd-signdog": {
+        "description": "Luci for JD SignDog Script ",
+        "read": {
+            "uci": [ "jd-signdog" ]
+        },
+        "write": {
+            "uci": [ "jd-signdog" ]
+        }
+    }
+}

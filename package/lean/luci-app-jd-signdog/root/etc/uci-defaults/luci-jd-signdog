@@ -1,0 +1,11 @@
+#!/bin/sh
+
+uci -q batch <<-EOF >/dev/null
+	delete ucitrack.@jd-signdog[-1]
+	add ucitrack jd-signdog
+	set ucitrack.@jd-signdog[-1].init=jd-signdog
+	commit ucitrack
+EOF
+
+rm -f /tmp/luci-indexcache
+exit 0
