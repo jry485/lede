@@ -7,7 +7,7 @@ src-git passwall https://github.com/WYC-2020/openwrt-passwall
 src-git helloworld https://github.com/WYC-2020/helloworld
 src-git kenzok8 https://github.com/WYC-2020/openwrt-packages
 src-git dockerman https://github.com/lisaac/luci-app-dockerman
-src-git signdog https://github.com/WYC-2020/luci-app-jd-signdog.git
+#src-git signdog https://github.com/WYC-2020/luci-app-jd-signdog.git
 #src-git video https://github.com/openwrt/video.git
 #src-git targets https://github.com/openwrt/targets.git
 #src-git management https://github.com/openwrt-management/packages.git
