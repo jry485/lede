@@ -118,7 +118,6 @@ extra_command "enabled" "Check if service is started on boot"
 . "$initscript"
 
 [ -n "$USE_PROCD" ] && {
-
 	extra_command "running" "Check if service is running"
 	extra_command "status" "Service status"
 	extra_command "trace" "Start with syscall trace"
@@ -178,6 +177,5 @@ extra_command "enabled" "Check if service is started on boot"
 
 ALL_COMMANDS="${ALL_COMMANDS} ${EXTRA_COMMANDS}"
 ALL_HELP="${ALL_HELP}${EXTRA_HELP}"
-
 list_contains ALL_COMMANDS "$action" || action=help
 $action "$@"
