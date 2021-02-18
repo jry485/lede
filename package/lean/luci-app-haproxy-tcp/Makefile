@@ -19,8 +19,8 @@ define Package/$(PKG_NAME)/postinst
 #!/bin/sh
 rm -rf /tmp/luci*
 echo stopping haproxy
-/etc/init.d/haproxy stop
-/etc/init.d/haproxy disable
+[ ! -f /etc/init.d/haproxy ] || /etc/init.d/haproxy stop
+[ ! -f /etc/init.d/haproxy ] || /etc/init.d/haproxy disable
 echo haproxy disabled
 endef
 
