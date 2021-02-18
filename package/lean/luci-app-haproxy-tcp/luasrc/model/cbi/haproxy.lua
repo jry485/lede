@@ -11,6 +11,14 @@ end
 local state_msg = ""
 local haproxy_on = (luci.sys.call("pidof haproxy > /dev/null") == 0)
 local router_ip = luci.sys.exec("uci get network.lan.ipaddr")
+
+ local vt_enabled=luci.sys.exec('uci get haproxy.@arguments[0].enabled')
+ if vt_enabled then
+ 	if not haproxy_on then
+ 		os.execute("/etc/haproxy_init.sh start >/dev/null 2>&1 &")
+ 	end
+ end
+
 if haproxy_on then	
 	state_msg = "<b><font color=\"green\">" .. translate("Running") .. "</font></b>"
 else
