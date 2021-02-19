@@ -114,7 +114,7 @@ EOF
 
 restart(){
 	echo luci for haproxy
-	sleep 1s
+#	sleep 1s
 	local vt_enabled=`uci get haproxy.@arguments[0].enabled 2>/dev/null`
 	logger -t haproxy is initializing enabled is $vt_enabled
 	echo $vt_enabled 
@@ -124,7 +124,7 @@ restart(){
 		}
 		iptables -t nat -D OUTPUT -j HAPROXY &> /dev/null
 		iptables -t nat -F HAPROXY &> /dev/null
-		sleep 1
+#		sleep 1
 		iptables -t nat -X HAPROXY &> /dev/null
 		start;
 	else	
