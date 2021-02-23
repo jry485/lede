@@ -1,5 +1,5 @@
---- nl.c	2021-02-23 17:49:51.964312699 +0800
-+++ nl.c	2021-02-23 17:51:41.000000000 +0800
+--- a/nl.c	2021-02-23 17:49:51.964312699 +0800
++++ b/nl.c	2021-02-23 17:51:41.000000000 +0800
 @@ -155,6 +155,59 @@
  	return err;
  }
@@ -61,8 +61,8 @@
   * Close/Disconnect netlink socket.
   * @arg sk		Netlink socket.
 
---- include/netlink/netlink.h	2021-02-23 17:48:42.814948035 +0800
-+++ include/netlink/netlink.h	2021-02-23 17:51:56.000000000 +0800
+--- a/include/netlink/netlink.h	2021-02-23 17:48:42.814948035 +0800
++++ b/include/netlink/netlink.h	2021-02-23 17:51:56.000000000 +0800
 @@ -39,6 +39,9 @@
  
  /* Connection Management */
