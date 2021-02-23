@@ -1,0 +1,75 @@
+--- nl.c	2021-02-23 17:49:51.964312699 +0800
++++ nl.c	2021-02-23 17:51:41.000000000 +0800
+@@ -155,6 +155,59 @@
+ 	return err;
+ }
+ 
++int nl_connect_ex(struct nl_sock *sk, int protocol,int rxbuf, int txbuf)
++{
++	int err;
++	socklen_t addrlen;
++
++	sk->s_fd = socket(AF_NETLINK, SOCK_RAW, protocol);
++	if (sk->s_fd < 0) {
++		err = -nl_syserr2nlerr(errno);
++		goto errout;
++	}
++
++	if (!(sk->s_flags & NL_SOCK_BUFSIZE_SET)) {
++		err = nl_socket_set_buffer_size(sk, rxbuf, txbuf);
++		if (err < 0)
++			goto errout;
++	}
++
++	err = bind(sk->s_fd, (struct sockaddr*) &sk->s_local,
++		   sizeof(sk->s_local));
++	if (err < 0) {
++		err = -nl_syserr2nlerr(errno);
++		goto errout;
++	}
++
++	addrlen = sizeof(sk->s_local);
++	err = getsockname(sk->s_fd, (struct sockaddr *) &sk->s_local,
++			  &addrlen);
++	if (err < 0) {
++		err = -nl_syserr2nlerr(errno);
++		goto errout;
++	}
++
++	if (addrlen != sizeof(sk->s_local)) {
++		err = -NLE_NOADDR;
++		goto errout;
++	}
++
++	if (sk->s_local.nl_family != AF_NETLINK) {
++		err = -NLE_AF_NOSUPPORT;
++		goto errout;
++	}
++
++	sk->s_proto = protocol;
++
++	return 0;
++errout:
++	close(sk->s_fd);
++	sk->s_fd = -1;
++
++	return err;
++}
++
++
+ /**
+  * Close/Disconnect netlink socket.
+  * @arg sk		Netlink socket.
+
+--- include/netlink/netlink.h	2021-02-23 17:48:42.814948035 +0800
++++ include/netlink/netlink.h	2021-02-23 17:51:56.000000000 +0800
+@@ -39,6 +39,9 @@
+ 
+ /* Connection Management */
+ extern int			nl_connect(struct nl_sock *, int);
++
++extern int			nl_connect_ex(struct nl_sock *, int,int,int);
++
+ extern void			nl_close(struct nl_sock *);
+ 
+ /* Send */
