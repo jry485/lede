@@ -13,12 +13,6 @@ SUBTARGETS:=64 generic legacy geode
 KERNEL_PATCHVER:=5.10
 KERNEL_TESTING_PATCHVER:=5.10
 
-ifeq ($(KERNEL_PATCHVER),4.14)
-   $($(shell cp $(TOPDIR)/package/kernel/linux/modules/4.14-video.mk_templte $(TOPDIR)/package/kernel/linux/modules/video.mk))
-else
-   $($(shell cp $(TOPDIR)/package/kernel/linux/modules/5.0-video.mk_templte $(TOPDIR)/package/kernel/linux/modules/video.mk))
-endif
-
 KERNELNAME:=bzImage
 
 include $(INCLUDE_DIR)/target.mk
