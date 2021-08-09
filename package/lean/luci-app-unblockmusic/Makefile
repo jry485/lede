@@ -4,7 +4,6 @@ PKG_NAME:=luci-app-unblockmusic
 PKG_VERSION:=2.3.5
 PKG_RELEASE:=17
 
-
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)/config
@@ -16,7 +15,7 @@ config UnblockNeteaseMusic_Go
 
 config UnblockNeteaseMusic_NodeJS
 	bool "UnblockNeteaseMusic NodeJS Version"
-	depends on HAS_FPU || KERNEL_MIPS_FPU_EMULATOR
+	depends on HAS_FPU || KERNEL_MIPS_FPU_EMULATOR || SOFT_FLOAT
 	default y if i386||x86_64||arm||aarch64
 
 endmenu
@@ -32,7 +31,7 @@ define Package/$(PKG_NAME)
 	SUBMENU:=3. Applications
 	TITLE:=LuCI support for Unblock NeteaseCloudMusic
 	PKGARCH:=all
-	DEPENDS:=+dnsmasq-full +ipset +wget +UnblockNeteaseMusic_NodeJS:UnblockNeteaseMusic +UnblockNeteaseMusic_Go:UnblockNeteaseMusicGo
+	DEPENDS:=+dnsmasq-full +ipset +uclient-fetch +UnblockNeteaseMusic_NodeJS:UnblockNeteaseMusic +UnblockNeteaseMusic_Go:UnblockNeteaseMusic-Go
 endef
 
 define Build/Prepare
@@ -79,4 +78,3 @@ exit 0
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
-
