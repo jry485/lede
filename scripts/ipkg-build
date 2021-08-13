@@ -49,17 +49,11 @@ pkg_appears_sane() {
 		PKG_ERROR=1;
 	fi
 
-	if [ -f $CONTROL/conffiles ]; then
-		rm -f $CONTROL/conffiles.resolved
-		echo $(sed -e "s!^/!$pkg_dir/!" $CONTROL/conffiles)
-		for item in $(sed -e "s!^/!$pkg_dir/!" $CONTROL/conffiles) ; do
-		if [ -f $item ]; then
-		     echo "${item#$pkg_dir}" >> $CONTROL/conffiles.resolved
-		elif [ -d $item ]; then
-		    for cf in `$FIND $item -type f`; do
-			echo "${cf#$pkg_dir}" >> $CONTROL/conffiles.resolved
-		    done
-		fi
+	if [ -f "$CONTROL/conffiles" ]; then
+		rm -f "$CONTROL/conffiles.resolved"
+
+		for cf in $($FIND $(sed -e "s!^/!$pkg_dir/!" "$CONTROL/conffiles") -type f); do
+			echo "${cf#$pkg_dir}" >> "$CONTROL/conffiles.resolved"
 		done
 
 		rm "$CONTROL"/conffiles
