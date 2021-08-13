@@ -587,7 +587,7 @@ sub install_src {
 			$dep =~ s/^\+//;
 			$dep =~ s/^.+://;
 			next unless $dep;
-			install_package($feed, $dep, 0) == 0 or $ret = 1;
+			install_package($feed, $dep, $force) == 0 or $ret = 1;
 		}
 	}
 
