@@ -11,4 +11,5 @@ src-git dockerman https://github.com/WYC-2020/luci-app-dockerman.git
 #src-git targets https://github.com/openwrt/targets.git
 #src-git oldpackages http://git.openwrt.org/packages.git
 #src-link custom /usr/src/openwrt/custom-feed
-src-git openwrt-upx https://github.com/WYC-2020/openwrt-upx.git
+src-git openwrt_upx https://github.com/WYC-2020/openwrt-upx.git
+
