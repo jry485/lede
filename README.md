@@ -123,3 +123,19 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make -j$(($(np
 
 3. 想学习 OpenWrt 开发，但是摸不着门道？自学没毅力？基础太差？怕太难学不会？跟着佐大学 OpenWrt 开发入门培训班助你能学有所成
 报名地址：[点击报名](http://forgotfun.org/2018/04/openwrt-training-2018.html "报名")
+
+如何为openwrt中的某个模块生成PKG_MIRROR_HASH
+第一种方法(自动生成):
+
+1.在软件包的Makefile中让此项写成这样PKG_MIRROR_HASH:=skip  (如果不加上skip,那么在第三步填充哈希值时会直接删除"PKG_MIRROR_HASH:="这一行)
+2.下载软件包(如软件包名为hello,包的Makefile放在package/network/services/hello下)
+make package/network/services/hello/download V=s
+3.填充哈希值
+make package/network/services/hello/check FIXUP=1 V=s
+
+第二种方法(手动生成):
+1. 首先在软件包的Makefile中让此项空着(PKG_MIRROR_HASH:=)，然后将整个openwrt系统进行编译make -j10
+2. 在第一步完成之后会在dl目录下发现一个新模块相关的压缩包，直接使用以下命令来生成哈希值
+　　如:
+　　sha256sum 包名.tar.xz
+3. 将第二步生成的哈希值填充到Makefile的PKG_MIRROR_HASH即可
