@@ -2,7 +2,7 @@ src-git packages https://github.com/WYC-2020/packages
 src-git luci https://github.com/WYC-2020/luci
 src-git routing https://git.openwrt.org/feed/routing.git
 src-git telephony https://git.openwrt.org/feed/telephony.git
-src-git --depth=1  opencalsh https://github.com/WYC-2020/openclash.git
+src-git opencalsh https://github.com/WYC-2020/openclash.git
 src-git passwall https://github.com/WYC-2020/openwrt-passwall
 src-git helloworld https://github.com/WYC-2020/helloworld
 src-git openwrt_upx https://github.com/WYC-2020/openwrt-upx.git
