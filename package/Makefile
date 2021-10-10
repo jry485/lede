@@ -63,7 +63,7 @@ ifndef SDK
 endif
 
 $(curdir)/install: $(TMP_DIR)/.build $(curdir)/merge $(if $(CONFIG_TARGET_PER_DEVICE_ROOTFS),$(curdir)/merge-index)
-	- find $(STAGING_DIR_ROOT) -type d | $(XARGS) chmod 0755
+	- find $(STAGING_DIR_ROOT) -type d -print0 | $(XARGS) -0 chmod 0755
 	rm -rf $(TARGET_DIR) $(TARGET_DIR_ORIG)
 	mkdir -p $(TARGET_DIR)/tmp
 	$(file >$(TMP_DIR)/opkg_install_list,\
