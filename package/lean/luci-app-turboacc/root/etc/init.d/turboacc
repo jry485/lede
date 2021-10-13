@@ -222,8 +222,7 @@ start(){
 	uci set firewall.@defaults[0].flow_offloading_hw="${hw_flow}"
 	uci set firewall.@defaults[0].fullcone="${fullcone_nat}"
 	uci commit firewall
-
-	/etc/init.d/turboacc_fss start
+	reload_config firewall
 
 	[ "${sw_flow}" -ne "1" ] && {
 		[ "${sfe_flow}" -eq "1" ] && {
@@ -278,6 +277,7 @@ stop(){
 	uci set firewall.@defaults[0].flow_offloading_hw="${hw_flow}"
 	uci set firewall.@defaults[0].fullcone="${fullcone_nat}"
 	uci commit firewall
+	reload_config firewall
 
 	[ "${sfe_flow}" -ne "1" ] && {
 		[ -e "/etc/init.d/shortcut-fe" ] && [ "$(have_ecm_init)" = "0" ] && {
