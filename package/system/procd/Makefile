@@ -12,9 +12,9 @@ PKG_RELEASE:=$(AUTORELEASE)
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL=$(PROJECT_GIT)/project/procd.git
-PKG_SOURCE_DATE:=2021-08-13
-PKG_SOURCE_VERSION:=9f233f555f80d1c416656c04ab81d19edc738f07
-PKG_MIRROR_HASH:=01cdadba9e3a8848342f40383ff61cdc91516c9198790ca49dcc6837cdd83351
+PKG_SOURCE_DATE:=2021-10-13
+PKG_SOURCE_VERSION:=82dd39024f63e53becd07c89831ed7d5fac7f339
+PKG_MIRROR_HASH:=a9449894b4ce0b2860680c1691270d5fe9c84e4eecd48008ed732ef2d19af7db
 CMAKE_INSTALL:=1
 
 PKG_LICENSE:=GPL-2.0
@@ -68,7 +68,7 @@ define Package/procd-ujail
   SECTION:=base
   CATEGORY:=Base system
   DEPENDS:=@KERNEL_NAMESPACES +@KERNEL_UTS_NS +@KERNEL_IPC_NS +@KERNEL_PID_NS \
-	  +libubox +libubus +libblobmsg-json
+	  +libubox +libubus +libuci +libblobmsg-json
   TITLE:=OpenWrt process jail helper
 endef
 
@@ -90,7 +90,7 @@ endef
 define Package/uxc
   SECTION:=base
   CATEGORY:=Base system
-  DEPENDS:=+procd-ujail +libubus +libubox +libblobmsg-json +blockd
+  DEPENDS:=+procd-ujail +libubus +libubox +libblobmsg-json +blockd +rpcd
   TITLE:=OpenWrt container management
   MAINTAINER:=Daniel Golle <daniel@makrotopia.org>
 endef
