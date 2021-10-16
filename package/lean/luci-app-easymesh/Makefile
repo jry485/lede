@@ -11,8 +11,9 @@ PKG_DATE:=20210810
 include $(INCLUDE_DIR)/package.mk
 
 LUCI_TITLE:=LuCI Support for easymesh
-LUCI_PKGARCH:=all
-LUCI_DEPENDS:= +kmod-cfg80211 +batctl-default +kmod-batman-adv +wpad
+LUCI_DEPENDS:= +kmod-cfg80211 +batctl-default +kmod-batman-adv +wpad-openssl +dawn
+PKG_VERSION:=1.7
+
 
 include $(TOPDIR)/feeds/luci/luci.mk
 
