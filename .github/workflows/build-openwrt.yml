@@ -24,6 +24,7 @@ on:
         default: 'false'
 
 env:
+  LAST_VERSION_FILE_URL: https://raw.githubusercontent.com/WYC-2020/clash_core/main/openclash_version
   REPO_URL: https://github.com/WYC-2020/lede
   REPO_BRANCH: master
   CONFIG_FILE: .config_bak
@@ -33,7 +34,7 @@ env:
   UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
-
+  
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -86,6 +87,11 @@ jobs:
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 
+    - name: Init openclash version file
+      run:  |
+          mkdir output
+          echo -e "\n" >output/openclash_version
+
     - name: Compile the firmware
       id: compile
       run: |
@@ -111,7 +117,9 @@ jobs:
       id: environment
       if: env.UPLOAD_BIN_DIR == 'true' && !cancelled()
       run: |
-        cd bin/
+        cd bin/packages/*
+        echo "PACKAGES_DIR=$PWD" >> $GITHUB_ENV
+        cd ../..
         echo "WORKSPACE_DIR=$PWD" >> $GITHUB_ENV
         cd  targets/*/*
         echo "UPLOAD_PATH=$PWD" >> $GITHUB_ENV
@@ -188,6 +196,47 @@ jobs:
         tag_name: ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
+
+    - name: "Check file existence"
+      id: check_files
+      uses: andstor/file-existence-action@v1
+      with:
+          files: "${{ env.PACKAGES_DIR }}/opencalsh/Packages"
+
+    - name: Down last version file   
+      uses: suisei-cn/actions-download-file@v1
+      id: downloadfile
+      with:
+          url:  ${{ env.LAST_VERSION_FILE_URL }}
+
+    - name: Get openclash version
+      id: openclash
+      if: steps.check_files.outputs.files_exists == 'true'
+      run:  |
+          echo "LAST_VERSION=$(sed -n 1p ${{steps.downloadfile.outputs.filename}} 2>/dev/null)" >> $GITHUB_ENV
+          echo "OPENCLASH_VERSION=$(sed -n '/Version:*./p' ${{ env.PACKAGES_DIR }}/opencalsh/Packages |awk -F ':' '{gsub (" ","",$0);print $2}')" >> $GITHUB_ENV
+          echo "::set-output name=status::success"
+          cp ${{ env.PACKAGES_DIR }}/opencalsh/*.ipk output
+
+    - name: Update openclash version file
+      if: steps.openclash.outputs.status == 'success' && env.OPENCLASH_VERSION !=env.LAST_VERSION && !cancelled() 
+      run:  |
+          sed  -i "1c ${{ env.OPENCLASH_VERSION }} " output/openclash_version
+          sed  -i "2c https://img.shields.io/badge/New Release-$(echo ${{ env.OPENCLASH_VERSION }} | sed  "s/-/--/g")-orange.svg" output/openclash_version
+          echo "VERSION_COMMIT_MSG=update openclash version to ${{ env.OPENCLASH_VERSION }}" >> $GITHUB_ENV
+          
+    - name: Pushes to openclash repository
+      uses: cpina/github-action-push-to-another-repository@main
+      if:  env.OPENCLASH_VERSION !=env.LAST_VERSION && !cancelled() 
+      env:
+         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      with:
+         source-directory: output
+         destination-github-username: 'WYC-2020'
+         destination-repository-name: 'clash_core'
+         target-branch: main
+         user-email: 383152993@qq.com
+         commit-message: ${{ env.VERSION_COMMIT_MSG }}
 
     - name: Delete workflow runs
       uses: GitRML/delete-workflow-runs@main
