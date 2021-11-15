@@ -221,7 +221,7 @@ jobs:
     - name: Update openclash version file
       if: steps.openclash.outputs.status == 'success' && env.OPENCLASH_VERSION !=env.LAST_VERSION && !cancelled() 
       run:  |
-          sed  -i "1c ${{ env.OPENCLASH_VERSION }} " output/openclash_version
+          sed  -i "1c ${{ env.OPENCLASH_VERSION }}" output/openclash_version
           sed  -i "2c https://img.shields.io/badge/New Release-$(echo ${{ env.OPENCLASH_VERSION }} | sed  "s/-/--/g")-orange.svg" output/openclash_version
           echo "VERSION_COMMIT_MSG=update openclash version to ${{ env.OPENCLASH_VERSION }}" >> $GITHUB_ENV
           
