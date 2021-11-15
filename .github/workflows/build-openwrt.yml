@@ -201,7 +201,7 @@ jobs:
       id: check_files
       uses: andstor/file-existence-action@v1
       with:
-          files: "${{ env.PACKAGES_DIR }}/opencalsh/Packages"
+          files: "${{ env.PACKAGES_DIR }}/openclash/Packages"
 
     - name: Down last version file   
       uses: suisei-cn/actions-download-file@v1
@@ -213,8 +213,8 @@ jobs:
       id: openclash
       if: steps.check_files.outputs.files_exists == 'true'
       run:  |
-          echo "LAST_VERSION=$(sed -n 1p ${{steps.downloadfile.outputs.filename}} 2>/dev/null)" >> $GITHUB_ENV
-          echo "OPENCLASH_VERSION=$(sed -n '/Version:*./p' ${{ env.PACKAGES_DIR }}/opencalsh/Packages |awk -F ':' '{gsub (" ","",$0);print $2}')" >> $GITHUB_ENV
+          echo "LAST_VERSION=v$(sed -n 1p ${{steps.downloadfile.outputs.filename}} 2>/dev/null)" >> $GITHUB_ENV
+          echo "OPENCLASH_VERSION=v$(sed -n '/Version:*./p' ${{ env.PACKAGES_DIR }}/openclash/Packages |awk -F ':' '{gsub (" ","",$0);print $2}')" >> $GITHUB_ENV
           echo "::set-output name=status::success"
           cp ${{ env.PACKAGES_DIR }}/opencalsh/*.ipk output
 
