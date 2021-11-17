@@ -213,7 +213,7 @@ jobs:
       id: openclash
       if: steps.check_files.outputs.files_exists == 'true'
       run:  |
-          echo "LAST_VERSION=v$(sed -n 1p ${{steps.downloadfile.outputs.filename}} 2>/dev/null)" >> $GITHUB_ENV
+          echo "LAST_VERSION=$(sed -n 1p ${{steps.downloadfile.outputs.filename}} 2>/dev/null)" >> $GITHUB_ENV
           echo "OPENCLASH_VERSION=v$(sed -n '/Version:*./p' ${{ env.PACKAGES_DIR }}/openclash/Packages |awk -F ':' '{gsub (" ","",$0);print $2}')" >> $GITHUB_ENV
           cp ${{ env.PACKAGES_DIR }}/openclash/*.ipk output
           echo "::set-output name=status::success"
