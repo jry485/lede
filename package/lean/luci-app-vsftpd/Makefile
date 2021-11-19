@@ -22,7 +22,7 @@ define Package/$(PKG_NAME)/config
 
 config PACKAGE_$(PKG_NAME)_INCLUDE_Sftp
 	bool "Include Openssh-sftp-server"
-	default n
+	default y
 
 endef
 
