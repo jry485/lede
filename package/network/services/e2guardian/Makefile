@@ -8,7 +8,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=e2guardian
-PKG_VERSION:=3.2.0
+PKG_VERSION:=5.3.5
 PKG_RELEASE:=1
 
 PKG_LICENSE:=GPL-2.0
@@ -16,7 +16,7 @@ PKG_MAINTAINER:=Luka Perkov <luka@openwrt.org>
 
 PKG_SOURCE:=v$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/$(PKG_NAME)/$(PKG_NAME)/archive/
-PKG_HASH:=cae011aacf6b250fc021c861fe46e15310349c474bca4553c0f829620e53e3bf
+PKG_HASH:=2065d6d5bde6af564f7625eff2d07e8bf868377d8b0f4b12033111d22458cd0e
 
 PKG_FIXUP:=autoreconf
 PKG_BUILD_PARALLEL:=1
