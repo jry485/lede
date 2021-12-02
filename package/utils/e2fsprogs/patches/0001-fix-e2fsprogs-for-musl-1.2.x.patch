@@ -1,0 +1,25 @@
+From c565140d69aa5283c404ed524c862aa688dfe2c4 Mon Sep 17 00:00:00 2001
+From: W_Y_CPP <383152993@qq.com>
+Date: Wed, 1 Dec 2021 19:27:13 -0800
+Subject: [PATCH] fix e2fsprogs for musl 1.2.x
+
+---
+ e2fsck/unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/e2fsck/unix.c b/e2fsck/unix.c
+index e71d783..fb06693 100644
+--- a/e2fsck/unix.c
++++ b/e2fsck/unix.c
+@@ -1438,7 +1438,7 @@ int main (int argc, char *argv[])
+ 
+ 		fputs("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n",
+ 		      ctx->problem_logf);
+-		fprintf(ctx->problem_logf, "<problem_log time=\"%lu\">\n",
++		fprintf(ctx->problem_logf, "<problem_log time=\"%lld\">\n",
+ 			ctx->now);
+ 		fprintf(ctx->problem_logf, "<invocation prog=\"%s\"",
+ 			argv[0]);
+-- 
+2.17.1
+
