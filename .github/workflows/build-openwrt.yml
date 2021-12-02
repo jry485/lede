@@ -54,11 +54,11 @@ jobs:
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
         
-    - name: cache
-      uses: klever1988/cachewrtbuild@main
-      with:
-        ccache: 'true'
-        prefix: ${{ github.workspace }}
+  #  - name: cache
+  #    uses: klever1988/cachewrtbuild@main
+  #    with:
+  #      ccache: 'true'
+  #      prefix: ${{ github.workspace }}
 
     - name: Update feeds
       run:  ./scripts/feeds update -a
