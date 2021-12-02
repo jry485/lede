@@ -1,0 +1,39 @@
+From 75f23f6a1cc4bd357dc01993b7f17746c3ced7bd Mon Sep 17 00:00:00 2001
+From: W_Y_CPP <383152993@qq.com>
+Date: Thu, 2 Dec 2021 01:41:58 -0800
+Subject: [PATCH] fix e2guardian build with musl 1.2.x
+
+---
+ src/FatController.cpp    | 2 +-
+ src/LOptionContainer.cpp | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/FatController.cpp b/src/FatController.cpp
+index 2492e67..6a4f2d8 100644
+--- a/src/FatController.cpp
++++ b/src/FatController.cpp
+@@ -194,7 +194,7 @@ void stat_rec::reset()
+     	fprintf(fs, "%s	%d	%d	%d	%d	%ld	%ld	%ld	 %ld	%d	 %d\n", buffer, o.http_workers,
+         bc, o.http_worker_Q.size(), o.log_Q->size(), cnx, cps, rqx, rqs, mfd, LC);
+     } else {
+-        fprintf(fs, "%ld	%d	%d	%d	%d	%ld	%ld	%ld	%ld	%d	%d\n", now, o.http_workers,
++        fprintf(fs, "%lld	%d	%d	%d	%d	%ld	%ld	%ld	%ld	%d	%d\n", now, o.http_workers,
+         bc, o.http_worker_Q.size(), o.log_Q->size(), cnx, cps, rqx, rqs, mfd, LC);
+     }
+ 
+diff --git a/src/LOptionContainer.cpp b/src/LOptionContainer.cpp
+index b999855..9eeeaf1 100644
+--- a/src/LOptionContainer.cpp
++++ b/src/LOptionContainer.cpp
+@@ -40,7 +40,7 @@ LOptionContainer::LOptionContainer(int load_id)
+ {
+     char buff[40];
+ 
+-    sprintf(buff, "%ld", time(NULL));
++    sprintf(buff, "%lld", time(NULL));
+     start_time = buff;
+ 
+     loaded_ok = true;
+-- 
+2.17.1
+
