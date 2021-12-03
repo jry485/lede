@@ -1,0 +1,39 @@
+From a11b2f226082a800d1c708380157d6d1cc0d4c75 Mon Sep 17 00:00:00 2001
+From: W_Y_CPP <383152993@qq.com>
+Date: Sat, 4 Dec 2021 01:18:40 +0900
+Subject: [PATCH] fix buile with musl 1.2.x
+
+---
+ e2fsck/unix.c | 2 +-
+ e2fsck/util.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/e2fsck/unix.c b/e2fsck/unix.c
+index e71d783..fb06693 100644
+--- a/e2fsck/unix.c
++++ b/e2fsck/unix.c
+@@ -1438,7 +1438,7 @@ int main (int argc, char *argv[])
+ 
+ 		fputs("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n",
+ 		      ctx->problem_logf);
+-		fprintf(ctx->problem_logf, "<problem_log time=\"%lu\">\n",
++		fprintf(ctx->problem_logf, "<problem_log time=\"%lld\">\n",
+ 			ctx->now);
+ 		fprintf(ctx->problem_logf, "<invocation prog=\"%s\"",
+ 			argv[0]);
+diff --git a/e2fsck/util.c b/e2fsck/util.c
+index d98b8e4..d4cd61d 100644
+--- a/e2fsck/util.c
++++ b/e2fsck/util.c
+@@ -126,7 +126,7 @@ void *e2fsck_allocate_memory(e2fsck_t ctx, unsigned long size,
+ 	printf("Allocating %u bytes for %s...\n", size, description);
+ #endif
+ 	if (ext2fs_get_memzero(size, &ret)) {
+-		sprintf(buf, "Can't allocate %u bytes for %s\n",
++		sprintf(buf, "Can't allocate %llu bytes for %s\n",
+ 			size, description);
+ 		fatal_error(ctx, buf);
+ 	}
+-- 
+2.17.1
+
