@@ -1,0 +1,57 @@
+From 769defc9a494645adbb5979855800d9e0f690145 Mon Sep 17 00:00:00 2001
+From: W_Y_CPP <383152993@qq.com>
+Date: Fri, 3 Dec 2021 23:41:20 +0900
+Subject: [PATCH] fix format error
+
+---
+ src/edge_utils.c | 4 ++--
+ src/sn_utils.c   | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/edge_utils.c b/src/edge_utils.c
+index 9dd5935..a7e06e0 100644
+--- a/src/edge_utils.c
++++ b/src/edge_utils.c
+@@ -1237,7 +1237,7 @@ static void readFromMgmtSocket(n2n_edge_t * eee, int * keep_running) {
+ 		      "Statistics for edge\n");
+ 
+   msg_len += snprintf((char *)(udp_buf+msg_len), (N2N_PKT_BUF_SIZE-msg_len),
+-		      "uptime %lu\n",
++		      "uptime %llu\n",
+ 		      time(NULL) - eee->start_time);
+ 
+   msg_len += snprintf((char *)(udp_buf+msg_len), (N2N_PKT_BUF_SIZE-msg_len),
+@@ -1258,7 +1258,7 @@ static void readFromMgmtSocket(n2n_edge_t * eee, int * keep_running) {
+ 		      HASH_COUNT(eee->known_peers));
+ 
+   msg_len += snprintf((char *)(udp_buf+msg_len), (N2N_PKT_BUF_SIZE-msg_len),
+-		      "last super:%lu(%ld sec ago) p2p:%lu(%ld sec ago)\n",
++		      "last super:%llu(%lld sec ago) p2p:%llu(%lld sec ago)\n",
+ 		      eee->last_sup, (now-eee->last_sup), eee->last_p2p,
+ 		      (now-eee->last_p2p));
+ 
+diff --git a/src/sn_utils.c b/src/sn_utils.c
+index 9c18477..0a833c2 100644
+--- a/src/sn_utils.c
++++ b/src/sn_utils.c
+@@ -428,7 +428,7 @@ static int process_mgmt(n2n_sn_t *sss,
+                         "----------------\n");
+ 
+     ressize += snprintf(resbuf + ressize, N2N_SN_PKTBUF_SIZE - ressize,
+-                        "uptime    %lu\n", (now - sss->start_time));
++                        "uptime    %llu\n", (now - sss->start_time));
+ 
+     HASH_ITER(hh, sss->communities, community, tmp)
+     {
+@@ -478,7 +478,7 @@ static int process_mgmt(n2n_sn_t *sss,
+       num = 0;
+       HASH_ITER(hh, community->edges, peer, tmpPeer) {
+         ressize += snprintf(resbuf + ressize, N2N_SN_PKTBUF_SIZE - ressize,
+-                            "\t[id: %u][MAC: %s][edge: %s][last seen: %lu sec ago]\n",
++                            "\t[id: %u][MAC: %s][edge: %s][last seen: %llu sec ago]\n",
+                             ++num, macaddr_str(mac_buf, peer->mac_addr),
+                             sock_to_cstr(sockbuf, &(peer->sock)), now-peer->last_seen);
+ 
+-- 
+2.17.1
+
