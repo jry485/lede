@@ -1,0 +1,45 @@
+From dca91a4d9156d58147d4c086597a5d90093241c3 Mon Sep 17 00:00:00 2001
+From: W_Y_CPP <383152993@qq.com>
+Date: Fri, 3 Dec 2021 23:48:02 +0900
+Subject: [PATCH] fix format error
+
+---
+ lib/bpf_legacy.c | 2 +-
+ lib/utils.c      | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/lib/bpf_legacy.c b/lib/bpf_legacy.c
+index 23854f1..bb63cc3 100644
+--- a/lib/bpf_legacy.c
++++ b/lib/bpf_legacy.c
+@@ -1334,7 +1334,7 @@ static int bpf_obj_hash(const char *object, uint8_t *out, size_t len)
+ 
+ 	size = sendfile(ofd, ffd, NULL, stbuff.st_size);
+ 	if (size != stbuff.st_size) {
+-		fprintf(stderr, "Error from sendfile (%zd vs %zu bytes): %s\n",
++		fprintf(stderr, "Error from sendfile (%zd vs %llu bytes): %s\n",
+ 			size, stbuff.st_size, strerror(errno));
+ 		ret = -1;
+ 		goto out_ffd;
+diff --git a/lib/utils.c b/lib/utils.c
+index 53d3100..7a03d7b 100644
+--- a/lib/utils.c
++++ b/lib/utils.c
+@@ -1231,12 +1231,12 @@ int print_timestamp(FILE *fp)
+ 		char tshort[40];
+ 
+ 		strftime(tshort, sizeof(tshort), "%Y-%m-%dT%H:%M:%S", tm);
+-		fprintf(fp, "[%s.%06ld] ", tshort, tv.tv_usec);
++		fprintf(fp, "[%s.%06lld] ", tshort, tv.tv_usec);
+ 	} else {
+ 		char *tstr = asctime(tm);
+ 
+ 		tstr[strlen(tstr)-1] = 0;
+-		fprintf(fp, "Timestamp: %s %ld usec\n",
++		fprintf(fp, "Timestamp: %s %lld usec\n",
+ 			tstr, tv.tv_usec);
+ 	}
+ 
+-- 
+2.17.1
+
