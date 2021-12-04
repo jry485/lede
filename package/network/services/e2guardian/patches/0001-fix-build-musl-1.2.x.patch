@@ -1,12 +1,13 @@
-From 75f23f6a1cc4bd357dc01993b7f17746c3ced7bd Mon Sep 17 00:00:00 2001
+From fd28ea431b59d213cf94a17753791ba64d79b56a Mon Sep 17 00:00:00 2001
 From: W_Y_CPP <383152993@qq.com>
-Date: Thu, 2 Dec 2021 01:41:58 -0800
-Subject: [PATCH] fix e2guardian build with musl 1.2.x
+Date: Sat, 4 Dec 2021 14:15:44 +0900
+Subject: [PATCH] fix build musl 1.2.x
 
 ---
  src/FatController.cpp    | 2 +-
  src/LOptionContainer.cpp | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ src/String.cpp           | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/src/FatController.cpp b/src/FatController.cpp
 index 2492e67..6a4f2d8 100644
@@ -34,6 +35,19 @@ index b999855..9eeeaf1 100644
      start_time = buff;
  
      loaded_ok = true;
+diff --git a/src/String.cpp b/src/String.cpp
+index 4091947..469fcb6 100644
+--- a/src/String.cpp
++++ b/src/String.cpp
+@@ -169,7 +169,7 @@ off_t String::toOffset()
+ #if defined(_FILE_OFFSET_BITS) && (_FILE_OFFSET_BITS == 64)
+     sscanf(this->c_str(), "%lld", &t);
+ #else
+-    sscanf(this->c_str(), "%ld", &t);
++    sscanf(this->c_str(), "%lld", &t);
+ #endif
+ 
+     return t;
 -- 
 2.17.1
 
