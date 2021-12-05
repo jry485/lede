@@ -8,13 +8,18 @@ s.anonymous = true
 s:tab("general",  translate("General Settings"))
 s:tab("template", translate("Edit Template"))
 
-s:taboption("general", Value, "name", translate("Hostname"))
-s:taboption("general", Value, "description", translate("Description"))
-s:taboption("general", Value, "workgroup", translate("Workgroup"))
+s:taboption("general", Value, "name", translate("Hostname")).default = "OpenWrt"
+s:taboption("general", Value, "description", translate("Description")).default = "Samba on OpenWRT"
+s:taboption("general", Value, "workgroup", translate("Workgroup")).default = "WORKGROUP"
 h = s:taboption("general", Flag, "homes", translate("Share home-directories"),
         translate("Allow system users to reach their home directories via " ..
                 "network shares"))
 h.rmempty = false
+
+a = s:taboption("general", Flag, "autoshare", translate("Auto Share"),
+        translate("Auto share local disk which connected"))
+a.rmempty = false
+a.default = "1"
 
 macos = s:taboption("general", Flag, "macos", translate("Enable macOS compatible shares"))
 macos.description = translate("Enables Apple's AAPL extension globally and adds macOS compatibility options to all shares.")
@@ -31,7 +36,7 @@ if nixio.fs.access("/usr/sbin/winbindd") then
 end
 
 tmpl = s:taboption("template", Value, "_tmpl",
-	translate("Edit the template that is used for generating the samba configuration."), 
+	translate(""), 
 	translate("This is the content of the file '/etc/samba/smb.conf.template' from which your samba configuration will be generated. " ..
 		"Values enclosed by pipe symbols ('|') should not be changed. They get their values from the 'General Settings' tab."))
 
@@ -64,11 +69,13 @@ br = s:option(Flag, "browseable", translate("Browse-able"))
 br.enabled = "yes"
 br.disabled = "no"
 br.default = "yes"
+br.rmempty = false
 
 ro = s:option(Flag, "read_only", translate("Read-only"))
 ro.enabled = "yes"
 ro.disabled = "no"
 ro.default = "yes"
+ro.rmempty = false
 
 s:option(Flag, "force_root", translate("Force Root"))
 
@@ -79,26 +86,31 @@ go = s:option(Flag, "guest_ok", translate("Allow guests"))
 go.enabled = "yes"
 go.disabled = "no"
 go.default = "no"
+go.rmempty = false
 
 gon = s:option(Flag, "guest_only", translate("Guests only"))
 gon.enabled = "yes"
 gon.disabled = "no"
 gon.default = "no"
+go.rmempty = false
 
 iown = s:option(Flag, "inherit_owner", translate("Inherit owner"))
 iown.enabled = "yes"
 iown.disabled = "no"
 iown.default = "no"
+go.rmempty = false
 
 cm = s:option(Value, "create_mask", translate("Create mask"))
 cm.rmempty = true
 cm.maxlength = 4
 cm.placeholder = "0666"
+cm.rmempty = true
 
 dm = s:option(Value, "dir_mask", translate("Directory mask"))
 dm.rmempty = true
 dm.maxlength = 4
 dm.placeholder = "0777"
+dm.rmempty = true
 
 vfs = s:option(Value, "vfs_objects", translate("Vfs objects"))
 vfs.rmempty = true
