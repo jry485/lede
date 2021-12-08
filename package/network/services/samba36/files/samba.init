@@ -97,8 +97,15 @@ service_triggers() {
 	done
 }
 
+get_config() {
+	config_get_bool enabled $1 enabled 1
+}
+
 start_service() {
 	init_config
+
+	config_foreach get_config samba
+	[ $enabled != 1 ] && return 1
 
 	procd_open_instance
 	procd_add_mdns "smb" "tcp" "445"
