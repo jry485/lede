@@ -24,22 +24,22 @@ endif
 
 PKG_SOURCE:=aliyundrive-webdav-v$(PKG_VERSION).$(PKG_ARCH)-unknown-linux-$(PKG_LIBC).tar.gz
 PKG_SOURCE_URL:=https://github.com/messense/aliyundrive-webdav/releases/download/v$(PKG_VERSION)/
-PKG_HASH:=skip
+PKG_HASH:=884bdbc065acc9cce660c664a2a5f4535d1dca0ee5c133cc57a7291ecd5259d3
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/aliyundrive-webdav
+define Package/$(PKG_NAME)
 	SECTION:=multimedia
 	CATEGORY:=Multimedia
 	TITLE:=WebDAV server for AliyunDrive
 	URL:=https://github.com/messense/aliyundrive-webdav
 endef
 
-define Package/aliyundrive-webdav/description
+define Package/$(PKG_NAME)/description
 WebDAV server for AliyunDrive.
 endef
 
-define Package/aliyundrive-webdav/conffiles
+define Package/$(PKG_NAME)/conffiles
 /etc/config/aliyundrive-webdav
 endef
 
@@ -47,7 +47,7 @@ define Download/sha256sum
 	FILE:=$(PKG_SOURCE).sha256
 	URL_FILE:=$(FILE)
 	URL:=$(PKG_SOURCE_URL)
-	HASH:=skip
+	HASH:=7e6e7e4a3bf07319904783d054612854fffe27e51c5ed794e6bee659b9ed5c61
 endef
 $(eval $(call Download,sha256sum))
 
@@ -61,10 +61,10 @@ define Build/Prepare
 endef
 
 define Build/Compile
-	echo "aliyundrive-webdav using precompiled binary."
+	echo "$(PKG_NAME) using precompiled binary."
 endef
 
-define Package/aliyundrive-webdav/install
+define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/aliyundrive-webdav $(1)/usr/bin/aliyundrive-webdav
 	$(INSTALL_DIR) $(1)/etc/init.d
@@ -73,4 +73,4 @@ define Package/aliyundrive-webdav/install
 	$(INSTALL_CONF) ./files/aliyundrive-webdav.config $(1)/etc/config/aliyundrive-webdav
 endef
 
-$(eval $(call BuildPackage,aliyundrive-webdav))
+$(eval $(call BuildPackage,$(PKG_NAME)))
