@@ -221,7 +221,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
       if: steps.openclash.outputs.status == 'success' && env.OPENCLASH_VERSION !=env.LAST_VERSION && !cancelled()
-      run:
+      run:  |
          git clone https://github.com/WYC-2020/clash_core.git
          cp -r clash_core/* output/
          cp ${{ env.PACKAGES_DIR }}/openclash/*.ipk output
