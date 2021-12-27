@@ -43,6 +43,7 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_SHORTCUT_FE
 config PACKAGE_$(PKG_NAME)_INCLUDE_BBR_CCA
 	bool "Include BBR CCA"
 	default y
+endef
 
 include $(TOPDIR)/feeds/luci/luci.mk
 
