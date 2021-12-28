@@ -218,25 +218,29 @@ jobs:
           echo "::set-output name=status::success"
 
     - name:  Clone clash_core repository
+      id: clash_core
       env:
         GITHUB_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
       if: steps.openclash.outputs.status == 'success' && env.OPENCLASH_VERSION !=env.LAST_VERSION && !cancelled()
       run:  |
          git clone https://github.com/WYC-2020/clash_core.git
          cp -r clash_core/* output/
-         rm output/*.ipk
+         rm -rf output/*.ipk
          cp ${{ env.PACKAGES_DIR }}/openclash/*.ipk output
+         echo "::set-output name=status::success"
          
     - name: Update openclash version file
-      if: steps.openclash.outputs.status == 'success' && env.OPENCLASH_VERSION !=env.LAST_VERSION && !cancelled() 
+      id: clash_core_version
+      if: steps.clash_core.outputs.status == 'success' && env.OPENCLASH_VERSION !=env.LAST_VERSION && !cancelled() 
       run:  |
           sed  -i "1c ${{ env.OPENCLASH_VERSION }}" output/openclash_version
           sed  -i "2c https://img.shields.io/badge/New Release-$(echo ${{ env.OPENCLASH_VERSION }} | sed  "s/-/--/g")-orange.svg" output/openclash_version
           echo "VERSION_COMMIT_MSG=update openclash version to ${{ env.OPENCLASH_VERSION }}" >> $GITHUB_ENV
+          echo "::set-output name=status::success"
           
     - name: Pushes to openclash repository
       uses: cpina/github-action-push-to-another-repository@main
-      if:  env.OPENCLASH_VERSION !=env.LAST_VERSION && !cancelled() 
+      if: steps.clash_core_version.outputs.status == 'success' && env.OPENCLASH_VERSION !=env.LAST_VERSION && !cancelled() 
       env:
          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
       with:
