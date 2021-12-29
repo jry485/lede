@@ -272,3 +272,17 @@ define KernelPackage/asn1-decoder
 endef
 
 $(eval $(call KernelPackage,asn1-decoder))
+
+define KernelPackage/lib-oid-registry
+  SUBMENU:=$(LIB_MENU)
+  TITLE:=OID-Registry function support
+  KCONFIG:=CONFIG_OID_REGISTRY
+  FILES:=$(LINUX_DIR)/lib/oid_registry.ko
+  AUTOLOAD:=$(call AutoProbe,oid-registry)
+endef
+
+define KernelPackage/lib-oid-registry/description
+ Kernel module for OID-Registry function support
+endef
+
+$(eval $(call KernelPackage,lib-oid-registry))
