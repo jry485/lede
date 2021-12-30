@@ -11,7 +11,7 @@ FEATURES:=squashfs vdi vmdk vhdx pcmcia fpu boot-part rootfs-part
 SUBTARGETS:=64 generic legacy geode 
 
 KERNEL_PATCHVER:=5.4
-KERNEL_TESTING_PATCHVER:=5.10
+KERNEL_TESTING_PATCHVER:=5.15
 
 KERNELNAME:=bzImage
 
@@ -23,7 +23,6 @@ htop lm-sensors autocore-x86 automount autosamba4 ca-bundle luci-app-ttyd \
 ath10k-firmware-qca988x ath10k-firmware-qca9888 ath10k-firmware-qca9984 brcmfmac-firmware-43602a1-pcie openssh-server \
 kmod-sound-hda-core kmod-sound-hda-codec-realtek kmod-sound-hda-codec-via kmod-sound-via82xx kmod-sound-hda-intel kmod-sound-hda-codec-hdmi kmod-sound-i8x0 kmod-usb-audio \
 kmod-usb-net kmod-usb-net-asix kmod-usb-net-asix-ax88179 kmod-usb-net-rtl8150 kmod-usb-net-rtl8152-vendor kmod-mlx4-core kmod-mlx5-core
-
 
 $(eval $(call BuildTarget))
 
