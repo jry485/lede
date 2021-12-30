@@ -408,12 +408,12 @@ define KernelPackage/fs-nfs-common-rpcsec
 	+kmod-crypto-sha1 \
 	+kmod-crypto-hmac \
 	+kmod-crypto-ecb \
+	+kmod-lib-oid-registry \
 	+kmod-crypto-arc4
   KCONFIG:= \
 	CONFIG_SUNRPC_GSS \
 	CONFIG_RPCSEC_GSS_KRB5
   FILES:= \
-	$(LINUX_DIR)/lib/oid_registry.ko \
 	$(LINUX_DIR)/net/sunrpc/auth_gss/auth_rpcgss.ko \
 	$(LINUX_DIR)/net/sunrpc/auth_gss/rpcsec_gss_krb5.ko
   AUTOLOAD:=$(call AutoLoad,31,oid_registry auth_rpcgss rpcsec_gss_krb5)
