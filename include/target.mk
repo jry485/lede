@@ -260,6 +260,11 @@ ifeq ($(DUMP),1)
         FEATURES += testing-kernel
       endif
     endif
+    ifdef KERNEL_BATE_PATCHVER
+      ifneq ($(KERNEL_BATE_PATCHVER),$(KERNEL_PATCHVER))
+        FEATURES += bate-kernel
+      endif
+    endif
     ifneq ($(CONFIG_OF),)
       FEATURES += dt
     endif
@@ -319,6 +324,7 @@ define BuildTargets/DumpCurrent
 	 echo 'CPU-Type: $(CPU_TYPE)$(if $(CPU_SUBTYPE),+$(CPU_SUBTYPE))'; \
 	 echo 'Linux-Version: $(LINUX_VERSION)'; \
 	$(if $(LINUX_TESTING_VERSION),echo 'Linux-Testing-Version: $(LINUX_TESTING_VERSION)';) \
+	$(if $(LINUX_BATE_VERSION),echo 'Linux-Bate-Version: $(LINUX_BATE_VERSION)';) \
 	 echo 'Linux-Release: $(LINUX_RELEASE)'; \
 	 echo 'Linux-Kernel-Arch: $(LINUX_KARCH)'; \
 	$(if $(SUBTARGET),,$(if $(DEFAULT_SUBTARGET), echo 'Default-Subtarget: $(DEFAULT_SUBTARGET)'; )) \

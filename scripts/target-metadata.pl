@@ -46,6 +46,7 @@ sub target_config_features(@) {
 		/^rootfs-part$/ and $ret .= "\tselect USES_ROOTFS_PART\n";
 		/^boot-part$/ and $ret .= "\tselect USES_BOOT_PART\n";
 		/^testing-kernel$/ and $ret .= "\tselect HAS_TESTING_KERNEL\n";
+		/^bate-kernel$/ and $ret .= "\tselect HAS_BATE_KERNEL\n";
 		/^dt-overlay$/ and $ret .= "\tselect HAS_DT_OVERLAY_SUPPORT\n";
 	}
 	return $ret;
@@ -89,13 +90,15 @@ sub print_target($) {
 
 	my $v = kver($target->{version});
 	my $tv = kver($target->{testing_version});
+	my $tb = kver($target->{bate_version});
 	$tv or $tv = $v;
 	if (@{$target->{subtargets}} == 0) {
 	$confstr = <<EOF;
 config TARGET_$target->{conf}
 	bool "$target->{name}"
-	select LINUX_$v if !TESTING_KERNEL
+	select LINUX_$v if (!TESTING_KERNEL&&!BATE_KERNEL)
 	select LINUX_$tv if TESTING_KERNEL
+	select LINUX_$tb if BATE_KERNEL
 EOF
 	}
 	else {
@@ -397,7 +400,7 @@ EOF
 
 	my %kver;
 	foreach my $target (@target) {
-		foreach my $tv ($target->{version}, $target->{testing_version}) {
+		foreach my $tv ($target->{version}, $target->{testing_version},$target->{bate_version}) {
 			next unless $tv;
 			my $v = kver($tv);
 			next if $kver{$v};
