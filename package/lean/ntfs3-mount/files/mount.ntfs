@@ -1,0 +1,2 @@
+#!/bin/sh
+mount -o iocharset=utf8 -t ntfs3 "$@"
