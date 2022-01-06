@@ -26,6 +26,7 @@ LUCI_DEPENDS:= \
 	+PACKAGE_$(PKG_NAME)_INCLUDE_SHORTCUT_FE_DRV:kmod-shortcut-fe-drv
 
 define Package/$(PKG_NAME)/config
+menu "Configuration"
 config PACKAGE_$(PKG_NAME)_INCLUDE_OFFLOADING
 	bool "Include Flow Offload"
 	depends on (!(LINUX_4_9) && PACKAGE_$(PKG_NAME)_INCLUDE_SHORTCUT_FE=n && PACKAGE_$(PKG_NAME)_INCLUDE_SHORTCUT_FE_DRV=n)
@@ -43,6 +44,7 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_SHORTCUT_FE
 config PACKAGE_$(PKG_NAME)_INCLUDE_BBR_CCA
 	bool "Include BBR CCA"
 	default y
+endmenu
 endef
 
 include $(TOPDIR)/feeds/luci/luci.mk
