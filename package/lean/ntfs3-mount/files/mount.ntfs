@@ -1,2 +1,6 @@
 #!/bin/sh
+<<<<<<< HEAD
 mount -o iocharset=utf8 -t ntfs3 "$@"
+=======
+mount -t ntfs3 -o iocharset=utf8 "$@"
+>>>>>>> lede
