@@ -398,9 +398,7 @@ $(eval $(call KernelPackage,fs-nfs))
 define KernelPackage/fs-nfs-ssc
   SUBMENU:=$(FS_MENU)
   TITLE:=Common NFS filesystem SSC Helper module
-  KCONFIG:= \
-	CONFIG_GRACE_PERIOD@ge5.10 \
-	CONFIG_NFS_V4_2_SSC_HELPER=y@ge5.15
+  KCONFIG:= CONFIG_NFS_V4_2@ge5.10
   FILES:= $(LINUX_DIR)/fs/nfs_common/nfs_ssc.ko@ge5.10
   AUTOLOAD:=$(call AutoLoad,30,nfs_ssc)
 endef
