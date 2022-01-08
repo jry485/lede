@@ -937,6 +937,7 @@ endef
 KernelPackage/crypto-sha512/tegra=$(KernelPackage/crypto-sha512/arm)
 
 define KernelPackage/crypto-sha512/x86/64
+  KCONFIG:= CONFIG_CRYPTO_SHA512_SSSE3
   FILES+=$(LINUX_DIR)/arch/x86/crypto/sha512-ssse3.ko
   AUTOLOAD+=$(call AutoLoad,09,sha512-ssse3)
 endef
