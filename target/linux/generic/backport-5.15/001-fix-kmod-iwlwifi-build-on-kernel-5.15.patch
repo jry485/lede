@@ -1,0 +1,68 @@
+From 3e05a3daf91be336a7f8ade45d921272ecbb47c7 Mon Sep 17 00:00:00 2001
+From: W_Y_CPP <383152993@qq.com>
+Date: Sat, 8 Jan 2022 20:46:25 +0900
+Subject: [PATCH] fix kmod-iwlwifi build on kernel 5.15
+
+---
+ drivers/thermal/thermal_core.c | 18 ++++++++++++++++++
+ include/linux/thermal.h        |  8 ++++++++
+ 2 files changed, 26 insertions(+)
+
+diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
+index 13891745a..65d7d11be 100644
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -508,6 +508,24 @@ void thermal_zone_device_update(struct thermal_zone_device *tz,
+ }
+ EXPORT_SYMBOL_GPL(thermal_zone_device_update);
+ 
++/**
++ * thermal_notify_framework - Sensor drivers use this API to notify framework
++ * @tz:		thermal zone device
++ * @trip:	indicates which trip point has been crossed
++ *
++ * This function handles the trip events from sensor drivers. It starts
++ * throttling the cooling devices according to the policy configured.
++ * For CRITICAL and HOT trip points, this notifies the respective drivers,
++ * and does actual throttling for other trip points i.e ACTIVE and PASSIVE.
++ * The throttling policy is based on the configured platform data; if no
++ * platform data is provided, this uses the step_wise throttling policy.
++ */
++void thermal_notify_framework(struct thermal_zone_device *tz, int trip)
++{
++	handle_thermal_trip(tz, trip);
++}
++EXPORT_SYMBOL_GPL(thermal_notify_framework);
++
+ static void thermal_zone_device_check(struct work_struct *work)
+ {
+ 	struct thermal_zone_device *tz = container_of(work, struct
+diff --git a/include/linux/thermal.h b/include/linux/thermal.h
+index c31489397..40d9e106d 100644
+--- a/include/linux/thermal.h
++++ b/include/linux/thermal.h
+@@ -393,6 +393,8 @@ int thermal_zone_get_offset(struct thermal_zone_device *tz);
+ int thermal_zone_device_enable(struct thermal_zone_device *tz);
+ int thermal_zone_device_disable(struct thermal_zone_device *tz);
+ void thermal_zone_device_critical(struct thermal_zone_device *tz);
++void thermal_notify_framework(struct thermal_zone_device *, int);
++void thermal_cdev_update(struct thermal_cooling_device *);
+ #else
+ static inline struct thermal_zone_device *thermal_zone_device_register(
+ 	const char *type, int trips, int mask, void *devdata,
+@@ -441,6 +443,12 @@ static inline int thermal_zone_device_enable(struct thermal_zone_device *tz)
+ 
+ static inline int thermal_zone_device_disable(struct thermal_zone_device *tz)
+ { return -ENODEV; }
++
++static inline void thermal_notify_framework(struct thermal_zone_device *tz,
++	int trip)
++{ }
++static inline void thermal_cdev_update(struct thermal_cooling_device *cdev)
++{ }
+ #endif /* CONFIG_THERMAL */
+ 
+ #endif /* __THERMAL_H__ */
+-- 
+2.17.1
+
