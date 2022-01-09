@@ -401,10 +401,9 @@ define KernelPackage/fs-nfs-ssc
   KCONFIG:= \
 	CONFIG_GRACE_PERIOD
   FILES:= \
-	$(LINUX_DIR)/fs/nfs_common/nfs_ssc.ko@ge5.10 \
-	$(LINUX_DIR)/fs/nfs_common/grace.ko
+	$(LINUX_DIR)/fs/nfs_common/nfs_ssc.ko@ge5.10
 
-  AUTOLOAD:=$(call AutoLoad,30,nfs_ssc grace)
+  AUTOLOAD:=$(call AutoLoad,30,nfs_ssc)
 endef
 
 $(eval $(call KernelPackage,fs-nfs-ssc))
@@ -413,15 +412,17 @@ $(eval $(call KernelPackage,fs-nfs-ssc))
 define KernelPackage/fs-nfs-common
   SUBMENU:=$(FS_MENU)
   TITLE:=Common NFS filesystem modules
-  DEPENDS:=+kmod-fs-nfs-ssc
+  DEPENDS:=+!LINUX_5_4:kmod-fs-nfs-ssc
   KCONFIG:= \
 	CONFIG_LOCKD \
-	CONFIG_SUNRPC 
+	CONFIG_SUNRPC \
+	CONFIG_GRACE_PERIOD
 
   FILES:= \
 	$(LINUX_DIR)/fs/lockd/lockd.ko \
-	$(LINUX_DIR)/net/sunrpc/sunrpc.ko 
-  AUTOLOAD:=$(call AutoLoad,30,sunrpc lockd)
+	$(LINUX_DIR)/net/sunrpc/sunrpc.ko \
+	$(LINUX_DIR)/fs/nfs_common/grace.ko
+  AUTOLOAD:=$(call AutoLoad,30,grace sunrpc lockd)
 endef
 
 $(eval $(call KernelPackage,fs-nfs-common))
@@ -476,7 +477,7 @@ $(eval $(call KernelPackage,fs-nfs-v3))
 define KernelPackage/fs-nfs-v4
   SUBMENU:=$(FS_MENU)
   TITLE:=NFS4 filesystem client support
-  DEPENDS:=+kmod-fs-nfs +kmod-fs-nfs-ssc
+  DEPENDS:=+kmod-fs-nfs +!LINUX_5_4:kmod-fs-nfs-ssc
   KCONFIG:= \
 	CONFIG_NFS_V4=y
   FILES:= \
