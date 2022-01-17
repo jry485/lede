@@ -1143,8 +1143,8 @@ define KernelPackage/rxrpc
 	CONFIG_AF_RXRPC_DEBUG=n
   FILES:= \
 	$(LINUX_DIR)/net/rxrpc/rxrpc.ko
-  AUTOLOAD:=$(call AutoLoad,30,rxrpc.ko)
-  DEPENDS:= +kmod-crypto-manager +kmod-crypto-pcbc +kmod-crypto-fcrypt
+  AUTOLOAD:=$(call AutoLoad,30,rxrpc)
+  DEPENDS:= +kmod-crypto-manager +kmod-crypto-pcbc +kmod-crypto-fcrypt +kmod-udptunnel6 +kmod-udptunnel4
 endef
 
 define KernelPackage/rxrpc/description
