@@ -428,6 +428,24 @@ endef
 
 $(eval $(call KernelPackage,sound-hda-codec-cirrus))
 
+define KernelPackage/snd-hda-codec-si3054
+  SUBMENU:=$(SOUND_MENU)
+  TITLE:=HD Audio Cirrus Logic HDA bridge
+  KCONFIG:= \
+	CONFIG_SND_HDA_CODEC_CS8409
+  FILES:= \
+	$(LINUX_DIR)/sound/pci/hda/snd-hda-codec-si3054.ko
+  AUTOLOAD:=$(call AutoProbe,snd-hda-codec-si3054)
+  $(call AddDepends/sound,kmod-sound-hda-core)
+endef
+
+define KernelPackage/snd-hda-codec-si3054/description
+ Kernel modules for HD Audio Cirrus Logic HDA bridge support
+endef
+
+$(eval $(call KernelPackage,snd-hda-codec-si3054))
+
+
 define KernelPackage/sound-hda-codec-ca0110
   SUBMENU:=$(SOUND_MENU)
   TITLE:=HD Audio Creative CA0110 Codec

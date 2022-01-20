@@ -1,0 +1,29 @@
+From 0c338107a0fb0f85d9191add327ce35bb28fdd65 Mon Sep 17 00:00:00 2001
+From: W_Y_CPP <383152993@qq.com>
+Date: Tue, 18 Jan 2022 02:04:35 -0500
+Subject: [PATCH] fix nf_conntrack_register_notifier
+
+---
+ xt_FULLCONENAT.c | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/xt_FULLCONENAT.c b/xt_FULLCONENAT.c
+index 0d4f742..cd89a25 100644
+--- a/xt_FULLCONENAT.c
++++ b/xt_FULLCONENAT.c
+@@ -1257,12 +1257,7 @@ static int fullconenat_tg_check(const struct xt_tgchk_param *par)
+     ct_event_notifier.fcn = ct_event_cb;
+ #endif
+ 
+-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 0) && !defined(CONFIG_NF_CONNTRACK_CHAIN_EVENTS)
+-    nf_conntrack_register_notifier(par->net, &ct_event_notifier);
+-    if (true) {
+-#else
+     if (nf_conntrack_register_notifier(par->net, &ct_event_notifier) == 0) {
+-#endif
+       ct_event_notifier_registered = 1;
+       pr_debug("xt_FULLCONENAT: fullconenat_tg_check(): ct_event_notifier registered\n");
+     } else {
+-- 
+2.17.1
+
