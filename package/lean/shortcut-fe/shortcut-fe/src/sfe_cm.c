@@ -311,8 +311,9 @@ static unsigned int sfe_cm_post_routing(struct sk_buff *skb, int is_v4)
 	struct nf_conntrack_tuple reply_tuple;
 	struct sk_buff *tmp_skb = NULL;
 	SFE_NF_CONN_ACCT(acct);
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 0)
 	struct net *net=NULL;
-
+#endif
 	/*
 	 * Don't process broadcast or multicast packets.
 	 */
