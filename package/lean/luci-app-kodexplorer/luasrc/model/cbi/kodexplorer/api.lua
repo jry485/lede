@@ -7,7 +7,6 @@ local i18n = require "luci.i18n"
 module("luci.model.cbi.kodexplorer.api", package.seeall)
 
 local appname = "kodexplorer"
-local api_url = "https://api.kodcloud.com/?app/version"
 
 local wget = "/usr/bin/wget"
 local wget_args = { "--no-check-certificate", "--quiet", "--timeout=10", "--tries=2" }
@@ -67,6 +66,10 @@ function get_project_directory()
     return uci:get(appname, "@global[0]", "project_directory") or "/tmp/kodcloud"
 end
 
+function get_remote_url()
+    return uci:get(appname, "@global[0]", "remote_url")
+end
+
 function get_version()
     local version = get_project_directory() .. "/config/version.php"
     return sys.exec(string.format("echo -n $(cat %s 2>/dev/null | grep \"'KOD_VERSION'\" | cut -d \"'\" -f 4)", version))
@@ -111,9 +114,16 @@ local function get_api_json(url)
 end
 
 function to_check()
-    local json = get_api_json(api_url)
+    local json = get_api_json(get_remote_url())
     return json
 end
+
+function to_del()
+    local client_file = get_project_directory()
+    sys.call("/bin/rm -rf " .. client_file)
+        return {code = 0}
+end
+
 
 function to_download(url)
     if not url or url == "" then

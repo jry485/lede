@@ -91,6 +91,12 @@ o = s:taboption("global", Value, "project_directory", translate("Project directo
 o.default = "/mnt/sda1/kodexplorer"
 o.rmempty = false
 
+o = s:taboption("global",Value, 'remote_url', translate('更新源地址'),translate('当官方源无法更新时,可以选择使用GitHub'))
+o:value('https://api.kodcloud.com/?app/version', translate('官方'))
+o:value('https://raw.githubusercontent.com/WYC-2020/kodexplorer/master/version', translate('GitHub'))
+o.default = "https://api.kodcloud.com/?app/version"
+o.rmempty = false
+
 o = s:taboption("global", Button, "_update")
 o.template = "kodexplorer/version"
 return m

@@ -13,6 +13,7 @@ function index()
     e.dependent = true
     e.acl_depends = { "luci-app-kodexplorer" }
 
+       entry({"admin", "nas", "kodexplorer", "del"}, call("action_del")).leaf = true
     entry({"admin", "nas", "kodexplorer", "check"}, call("action_check")).leaf = true
     entry({"admin", "nas", "kodexplorer", "download"}, call("action_download")).leaf = true
     entry({"admin", "nas", "kodexplorer", "status"}, call("act_status")).leaf = true
@@ -34,6 +35,12 @@ function action_check()
     local json = api.to_check()
     http_write_json(json)
 end
+
+function action_del()
+    local json = api.to_del()
+    http_write_json(json)
+end
+
 
 function action_download()
     local json = nil
