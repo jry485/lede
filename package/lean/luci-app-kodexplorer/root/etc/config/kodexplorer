@@ -8,4 +8,5 @@ config global
 	option ipv6 '0'
 	option memory_limit '120M'
 	option enable '0'
+	option remote_url 'https://cdn.jsdelivr.net/gh/WYC-2020/kodexplorer@master/version'
 
