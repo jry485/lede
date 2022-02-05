@@ -44,6 +44,12 @@ uci -q batch <<-EOF >/dev/null
 	set firewall.lantovpn.dest='vpn'
 
 	commit firewall
+
+	delete ucitrack.@openvpn[-1]
+	add ucitrack openvpn
+	set ucitrack.@openvpn[-1].init=openvpn
+	commit ucitrack
+
 EOF
 
 chmod 0777 /etc/openvpn/server/checkpsw.sh
