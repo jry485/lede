@@ -2,6 +2,16 @@
 local app_version = require "luci.model.cbi.kodexplorer.api".get_version()
 -%>
 
+<label class="cbi-value-title"><%:Clean ALL Data%></label>
+<div class="cbi-value-field" style="line-height:50px;">
+	<input class="cbi-button cbi-input-apply" type="button" id="del_btn"  value="<%:Reset%>" onclick="delClick(this);">
+</div>
+
+<label class="cbi-value-title"><%:Core%></label>
+<div class="cbi-value-field" style="line-height:50px;">
+	<select id="core_select" ><option><%:Target%></option><option><%:Target1%></option></select>
+</div>
+
 <% if app_version and app_version ~= "" then %>
 	<div class="cbi-value">
 		<label class="cbi-value-title">
@@ -14,20 +24,16 @@ local app_version = require "luci.model.cbi.kodexplorer.api".get_version()
 		</div>
 	</div>
 <% else %>
-	<div class="cbi-value">
-		<label class="cbi-value-title">
-			<%:Manually update%>
-		</label>
-		<div class="cbi-value-field">
-			<input class="cbi-button cbi-input-apply" type="button" id="download_btn" value="<%:Manually update%>" onclick="downloadClick(this);">
-			<span id="download-detail"></span>
-			<div class="cbi-value-description">
-				<%:Make sure you have enough space.%>
-				<br />
-				<font style='color:red'>
-					<%:Be sure to fill out the device path and store path for the first run, and then save the application. Then manually download, otherwise can not use!%>
-				</font>
-			</div>
+	<label class="cbi-value-title"><%:Manually update%></label>
+	<div class="cbi-value-field" style="line-height:50px;">
+		<input class="cbi-button cbi-input-apply" type="button" id="download_btn" value="<%:Manually update%>" onclick="downloadClick(this);">
+		<span id="download-detail"></span>
+		<div class="cbi-value-description">
+			<%:Make sure you have enough space.%>
+			<br />
+			<font style='color:red'>
+				<%:Be sure to fill out the device path and store path for the first run, and then save the application. Then manually download, otherwise can not use!%>
+			</font>
 		</div>
 	</div>
 <% end %>
@@ -46,7 +52,7 @@ local app_version = require "luci.model.cbi.kodexplorer.api".get_version()
 	var decompressioningText = '<%:Unpacking...%>';
 	var movingText = '<%:Moving...%>';
 	var latestVersionText = '<%:The latest version:%>';
-
+	var coreselect=document.getElementById("core_select");
 	function addPageNotice() {
 		window.onbeforeunload = function (e) {
 			e.returnValue = downloadInProgressNotice;
@@ -88,6 +94,14 @@ local app_version = require "luci.model.cbi.kodexplorer.api".get_version()
 		}
 	}
 
+	function delClick(btn) {
+	doAjaxGet('<%=url([[admin]], [[nas]], [[kodexplorer]], [[del]])%>', {
+			token: tokenStr
+		}, function (json) {
+		 alert("重置成功");
+	     });
+	}
+	
 	function checkUpdate(btn) {
 		var text = btn.value;
 		btn.disabled = true;
@@ -101,7 +115,7 @@ local app_version = require "luci.model.cbi.kodexplorer.api".get_version()
 			token: tokenStr
 		}, function (json) {
 			removePageNotice();
-			if (json.code && json.data.server) {
+			if (json.code && json.data.server&&coreselect.selectedIndex==0) {
 				var server = json.data.server;
 				eval('Info = json');
 				btn.disabled = false;
@@ -119,7 +133,27 @@ local app_version = require "luci.model.cbi.kodexplorer.api".get_version()
 					ckeckDetailElm.innerHTML = urlNode;
 				}
 				msgInfo = server;
-			} else {
+			} else if(json.code && json.data.kodexplorer&&coreselect.selectedIndex==1)
+			{
+				var server = json.data.kodexplorer;
+				eval('Info = json');
+				btn.disabled = false;
+				btn.value = clickToDownloadText;
+				btn.placeholder = clickToDownloadText;
+				if (ckeckDetailElm) {
+					var urlNode = '';
+					if (server.version) {
+						urlNode = '<em style="color:red;">' + latestVersionText + server.version + '</em>';
+						var html_url = 'https://kodcloud.com/download/';
+						if (html_url) {
+							urlNode = '<a href="' + html_url + '" target="_blank">' + urlNode + '</a>';
+						}
+					}
+					ckeckDetailElm.innerHTML = urlNode;
+				}
+				msgInfo = server;
+			}
+			else {
 				removePageNotice();
 				btn.disabled = false;
 				btn.value = text;
