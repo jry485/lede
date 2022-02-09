@@ -13,7 +13,7 @@ PKG_RELEASE=1
 PKG_SOURCE:=qBittorrent-release-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/qbittorrent/qBittorrent/tar.gz/release-$(PKG_VERSION)?
 PKG_HASH:=da240744c6cc5953d7c4d298a02a0cf36d2c8897931819f1e6459bd5270a7c5c
-
+PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_BUILD_DIR:=$(BUILD_DIR)/qBittorrent-release-$(PKG_VERSION)
 
 PKG_LICENSE:=GPL-2.0+
@@ -27,13 +27,15 @@ PKG_INSTALL:=1
 PKG_USE_MIPS16:=0
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/cmake.mk
 
 define Package/qbittorrent
 	SECTION:=net
 	CATEGORY:=Network
 	SUBMENU:=BitTorrent
 	DEPENDS:=+libgcc +libstdcpp \
-		+rblibtorrent \
+		+boost \
+		+libtorrent-rasterbar \
 		+libopenssl \
 		+qt5-core \
 		+qt5-network \
@@ -53,16 +55,26 @@ define Package/qbittorrent/description
   well as many features.
 endef
 
-CONFIGURE_ARGS += \
-	--disable-gui \
-	--enable-stacktrace=no \
-	--with-boost=$(STAGING_DIR)/usr
+CMAKE_OPTIONS += \
+    -DGUI=OFF \
+    -DSTACKTRACE=OFF \
+    -DLIBTINS_BUILD_EXAMPLES=OFF \
+	-DLIBTINS_BUILD_TESTS=OFF \
+    -DCMAKE_BUILD_TYPE="Release" \
+    -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON
+
+CONFIGURE_VARS += \
+	QT_QMAKE=$(STAGING_DIR_HOSTPKG)/bin \
+	QMAKE_LRELEASE=$(STAGING_DIR_HOSTPKG)/bin/lrelease \
+	PKG_CONFIG_PATH=$(STAGING_DIR)/usr/lib/pkgconfig
+
+#CONFIGURE_ARGS += \
+#	--disable-gui \
+#	--with-boost=$(STAGING_DIR)/usr \
+#    --prefix=$(STAGING_DIR)
 
 MAKE_VARS += \
-	INSTALL_ROOT="$(PKG_INSTALL_DIR)"
-
-
-TARGET_LDFLAGS += -Wl,--gc-sections,--as-needed
+	INSTALL_ROOT=$(PKG_INSTALL_DIR)
 
 define Package/qbittorrent/conffiles
 /etc/config/qbittorrent
