@@ -77,7 +77,7 @@ endef
 define Package/$(PKG_NAME)/install
 	$(call GoPackage/Package/Install/Bin,$(PKG_INSTALL_DIR))
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(GO_PKG_BUILD_BIN_DIR)/BaiduPCS-Go $(1)/usr/bin/$(PKG_NAME)
+	$(INSTALL_BIN) $(GO_PKG_BUILD_BIN_DIR)/BaiduPCS-Go $(1)/usr/bin/$(PKG_NAME)-go
 endef
 
 $(eval $(call GoBinPackage,$(PKG_NAME)))
