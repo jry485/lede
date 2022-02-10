@@ -7,7 +7,6 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 Add the bare minimum needed to boot BCM2708 from a Device Tree.
-
 Signed-off-by: Noralf Tronnes <notro@tronnes.org>
 
 BCM2708: DT: change 'axi' nodename to 'soc'
@@ -25635,11 +25634,6 @@ Signed-off-by: Phil Elwell <phil@raspberrypi.org>
 @@ -0,0 +1 @@
 +../../../../arm/boot/dts/bcm283x-rpi-lan7515.dtsi
 \ No newline at end of file
---- /dev/null
-+++ b/arch/arm64/boot/dts/overlays
-@@ -0,0 +1 @@
-+../../../arm/boot/dts/overlays
-\ No newline at end of file
 --- a/scripts/Makefile.dtbinst
 +++ b/scripts/Makefile.dtbinst
 @@ -18,9 +18,10 @@ include scripts/Kbuild.include
@@ -25693,3 +25687,14 @@ Signed-off-by: Phil Elwell <phil@raspberrypi.org>
  dtc-tmp = $(subst $(comma),_,$(dot-target).dts.tmp)
  
  # Bzip2
+
+diff --git a/arch/arm64/boot/dts/overlays b/arch/arm64/boot/dts/overlays
+new file mode 120000
+index 000000000..ded08646b
+--- /dev/null
++++ b/arch/arm64/boot/dts/overlays
+@@ -0,0 +1 @@
++../../../arm/boot/dts/overlays
+\ No newline at end of file
+-- 
+2.17.1
