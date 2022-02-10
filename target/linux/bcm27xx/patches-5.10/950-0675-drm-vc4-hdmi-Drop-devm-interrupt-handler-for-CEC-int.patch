@@ -1,31 +1,17 @@
-From 687a0fc86f37e0bc74c8382c0d89b0929fade1de Mon Sep 17 00:00:00 2001
-From: Maxime Ripard <maxime@cerno.tech>
-Date: Mon, 5 Jul 2021 15:47:43 +0200
-Subject: [PATCH] drm/vc4: hdmi: Drop devm interrupt handler for CEC
- interrupts
+From 9a172812dd5f11f90ee73978ed995e882f4d914c Mon Sep 17 00:00:00 2001
+From: W_Y_CPP <383152993@qq.com>
+Date: Wed, 9 Feb 2022 21:57:49 -0500
+Subject: [PATCH] drm-vc4-hdmi-Drop-devm-interrupt-handler-for-CEC-int
 
-The CEC interrupt handlers are registered through the
-devm_request_threaded_irq function. However, while free_irq is indeed
-called properly when the device is unbound or bind fails, it's called
-after unbind or bind is done.
-
-In our particular case, it means that on failure it creates a window
-where our interrupt handler can be called, but we're freeing every
-resource (CEC adapter, DRM objects, etc.) it might need.
-
-In order to address this, let's switch to the non-devm variant to
-control better when the handler will be unregistered and allow us to
-make it safe.
-
-Fixes: 15b4511a4af6 ("drm/vc4: add HDMI CEC support")
-Signed-off-by: Maxime Ripard <maxime@cerno.tech>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c | 49 +++++++++++++++++++++++-----------
- 1 file changed, 33 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/vc4/vc4_hdmi.c | 31 ++++++++++++++++++++++++-------
+ 1 file changed, 24 insertions(+), 7 deletions(-)
 
+diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
+index 32774e2cd..7cacec33f 100644
 --- a/drivers/gpu/drm/vc4/vc4_hdmi.c
 +++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -1896,40 +1896,49 @@ static int vc4_hdmi_cec_init(struct vc4_
+@@ -1896,25 +1896,23 @@ static int vc4_hdmi_cec_init(struct vc4_hdmi *vc4_hdmi)
  	vc4_hdmi_cec_update_clk_div(vc4_hdmi);
  
  	if (vc4_hdmi->variant->external_irq_controller) {
@@ -55,7 +41,7 @@ Signed-off-by: Maxime Ripard <maxime@cerno.tech>
  						vc4_cec_irq_handler,
  						vc4_cec_irq_handler_thread, 0,
  						"vc4 hdmi cec", vc4_hdmi);
-@@ -1924,10 +1922,20 @@ static int vc4_hdmi_cec_init(struct vc4_
+@@ -1924,10 +1922,20 @@ static int vc4_hdmi_cec_init(struct vc4_hdmi *vc4_hdmi)
  
  	ret = cec_register_adapter(vc4_hdmi->cec_adap, &pdev->dev);
  	if (ret < 0)
@@ -93,3 +79,6 @@ Signed-off-by: Maxime Ripard <maxime@cerno.tech>
  	cec_unregister_adapter(vc4_hdmi->cec_adap);
  }
  #else
+-- 
+2.17.1
+
