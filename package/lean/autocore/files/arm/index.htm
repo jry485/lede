@@ -93,7 +93,7 @@
 					expires = v:expires(),
 					uptime  = v:uptime(),
 					proto   = v:proto(),
-					ifname  = v:ifname(),
+					ifname  = v:name(),
 					link    = v:adminlink()
 				}
 				rv.wan[#rv.wan+1] = wan_info
@@ -113,7 +113,7 @@
 					ip6prefix = v:ip6prefix(),
 					uptime    = v:uptime(),
 					proto     = v:proto(),
-					ifname    = v:ifname(),
+					ifname    = v:name(),
 					link      = v:adminlink()
 				}
 				rv.wan6[#rv.wan6+1] = wan6_info
@@ -236,7 +236,7 @@
 					si.style.verticalAlign=  'middle';
 					ss.style.verticalAlign=  'middle';
 					ss.style.padding=  '3px'; 
-
+					si.style.wordBreak=  'break-all';
 					var ifc = wan_list[index];
 					if (ifc && ifc.ifname && ifc.proto != 'none')
 					{
@@ -300,7 +300,7 @@
 				si.style.verticalAlign=  'middle';
 				ss.style.verticalAlign=  'middle';
 				ss.style.padding=  '3px'; 
-
+				si.style.wordBreak=  'break-all';
 
 				si.innerHTML = '<img src="<%=resource%>/icons/ethernet_disabled.png" /><br /><small>?</small>';
 				ss.innerHTML = '<em><%:Not connected%></em>';
@@ -334,7 +334,7 @@
 					si6.style.verticalAlign=  'middle';
 					ss6.style.verticalAlign=  'middle';
 					ss6.style.padding=  '3px'; 
-
+					si6.style.wordBreak=  'break-all';
 
 					var ifc6 = wan6_list[index];
 					if (ifc6 && ifc6.ifname && ifc6.proto != 'none')
@@ -413,7 +413,7 @@
 				si6.style.verticalAlign=  'middle';
 				ss6.style.verticalAlign=  'middle';
 				ss6.style.padding=  '3px'; 
-
+				si6.style.wordBreak=  'break-all';
 
 				si6.innerHTML = '<img src="<%=resource%>/icons/ethernet_disabled.png" /><br /><small>?</small>';
 				ss6.innerHTML = '<em><%:Not connected%></em>';				
