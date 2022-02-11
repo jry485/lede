@@ -222,6 +222,13 @@
 				{
 					var ss=document.createElement("td");
 					var si=document.createElement("td");
+					si.style.width=  '100px'; 
+					si.style.textAlign= 'center'; 
+					si.style.padding=  '3px'; 
+					si.style.verticalAlign=  'middle';
+					ss.style.verticalAlign=  'middle';
+					ss.style.padding=  '3px'; 
+
 					var table= document.createElement("table");
 
 					var ifc = wan_list[index];
@@ -261,6 +268,7 @@
 								ifc.uptime
 							);
 						}
+
 						ss.innerHTML = String.format('<small>%s</small>', s);
 						si.innerHTML = String.format(
 							'<img src="<%=resource%>/icons/ethernet.png" />' +
@@ -280,6 +288,12 @@
 				var ss=document.createElement("td");
 				var si=document.createElement("td");
 				var table= document.createElement("table");
+				si.style.width=  '100px'; 
+                                si.style.textAlign= 'center'; 
+                                si.style.padding=  '3px'; 
+                                si.style.verticalAlign=  'middle';
+                                ss.style.verticalAlign=  'middle';
+                                ss.style.padding=  '3px'; 
 
 				si.innerHTML = '<img src="<%=resource%>/icons/ethernet_disabled.png" /><br /><small>?</small>';
 				ss.innerHTML = '<em><%:Not connected%></em>';
@@ -289,7 +303,7 @@
 				us.appendChild(table);
 
 			}
-									
+
 			<% if has_ipv6 then %>
 			
 			var us6 = document.getElementById('ipv6_status_table');
@@ -306,6 +320,12 @@
 					var ss6=document.createElement("td");
 					var si6=document.createElement("td");
 					var table6= document.createElement("table");
+					si6.style.width=  '100px'; 
+					si6.style.textAlign= 'center'; 
+					si6.style.padding=  '3px'; 
+					si6.style.verticalAlign=  'middle';
+					ss6.style.verticalAlign=  'middle';
+					ss6.style.padding=  '3px'; 
 
 					var ifc6 = wan6_list[index];
 					if (ifc6 && ifc6.ifname && ifc6.proto != 'none')
@@ -376,6 +396,13 @@
 			{
 				var ss6=document.createElement("td");
 				var si6=document.createElement("td");
+				si6.style.width=  '100px'; 
+				si6.style.textAlign= 'center'; 
+				si6.style.padding=  '3px'; 
+				si6.style.verticalAlign=  'middle';
+				ss6.style.verticalAlign=  'middle';
+				ss6.style.padding=  '3px'; 
+
 				var table6= document.createElement("table");
 
 				si6.innerHTML = '<img src="<%=resource%>/icons/ethernet_disabled.png" /><br /><small>?</small>';
@@ -844,7 +871,7 @@
 			</tr></table>
 		</td></tr>
 		<% if has_ipv6 then %>
-		<tr><td width="33%" style="vertical-align:top"><%:IPv6 WAN Status%></td><td id="ipv6_status_table>
+		<tr><td width="33%" style="vertical-align:top"><%:IPv6 WAN Status%></td><td id="ipv6_status_table">
 			<table><tr>
 				<td id="wan6_i" style="width:16px; text-align:center; padding:3px"><img src="<%=resource%>/icons/ethernet_disabled.png" /><br /><small>?</small></td>
 				<td id="wan6_s" style="vertical-align:middle; padding: 3px"><em><%:Collecting data...%></em></td>
