@@ -80,6 +80,7 @@ endef
 define KernelPackage/qca-nss-ecm-standard
   $(call KernelPackage/qca-nss-ecm/Default)
   VARIANT:=standard
+  DEPENDS+=+PACKAGE_kmod-qca-mcs:kmod-qca-mcs
 endef
 
 define KernelPackage/qca-nss-ecm-standard/Description
@@ -216,10 +217,6 @@ ifneq ($(CONFIG_PACKAGE_kmod-qca-ovsmgr),)
 ECM_MAKE_OPTS+=ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
 		ECM_CLASSIFIER_OVS_ENABLE=y
 EXTRA_CFLAGS+= -I$(STAGING_DIR)/usr/include/qca-ovsmgr
-endif
-
-ifneq ($(CONFIG_PACKAGE_kmod-macvlan),)
-ECM_MAKE_OPTS+=ECM_INTERFACE_MACVLAN_ENABLE=y
 endif
 
 # Keeping default as ipq806x for branches that does not have subtarget framework
