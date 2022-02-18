@@ -1,29 +1,26 @@
-From 0c338107a0fb0f85d9191add327ce35bb28fdd65 Mon Sep 17 00:00:00 2001
+From ea9e2477624adaa40e8a553ef876f60ec8d3150c Mon Sep 17 00:00:00 2001
 From: W_Y_CPP <383152993@qq.com>
-Date: Tue, 18 Jan 2022 02:04:35 -0500
-Subject: [PATCH] fix nf_conntrack_register_notifier
+Date: Fri, 18 Feb 2022 00:53:12 -0500
+Subject: [PATCH] refresh
 
 ---
- xt_FULLCONENAT.c | 5 -----
- 1 file changed, 5 deletions(-)
+ xt_FULLCONENAT.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/xt_FULLCONENAT.c b/xt_FULLCONENAT.c
-index 0d4f742..cd89a25 100644
+index f96cfd8a3..237666039 100644
 --- a/xt_FULLCONENAT.c
 +++ b/xt_FULLCONENAT.c
-@@ -1257,12 +1257,7 @@ static int fullconenat_tg_check(const struct xt_tgchk_param *par)
-     ct_event_notifier.fcn = ct_event_cb;
+@@ -1258,8 +1258,7 @@ static int fullconenat_tg_check(const struct xt_tgchk_param *par)
  #endif
  
--#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 0) && !defined(CONFIG_NF_CONNTRACK_CHAIN_EVENTS)
--    nf_conntrack_register_notifier(par->net, &ct_event_notifier);
--    if (true) {
--#else
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 0) && !defined(CONFIG_NF_CONNTRACK_CHAIN_EVENTS)
+-    if (!READ_ONCE(par->net->ct.nf_conntrack_event_cb)) {
+-      nf_conntrack_register_notifier(par->net, &ct_event_notifier);
++    if (!READ_ONCE(par->net->ct.nf_conntrack_event_cb)&&(nf_conntrack_register_notifier(par->net, &ct_event_notifier)==0)) {
+ #else
      if (nf_conntrack_register_notifier(par->net, &ct_event_notifier) == 0) {
--#endif
-       ct_event_notifier_registered = 1;
-       pr_debug("xt_FULLCONENAT: fullconenat_tg_check(): ct_event_notifier registered\n");
-     } else {
+ #endif
 -- 
 2.17.1
 
