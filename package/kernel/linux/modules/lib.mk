@@ -286,10 +286,10 @@ $(eval $(call KernelPackage,asn1-encoder))
 
 define KernelPackage/oid-registry
   SUBMENU:=$(LIB_MENU)
-  TITLE:=Object identifier registry
+  TITLE:=OID Registry
   KCONFIG:= CONFIG_OID_REGISTRY
+  HIDDEN:=1
   FILES:=$(LINUX_DIR)/lib/oid_registry.ko
-  AUTOLOAD:=$(call AutoLoad,31,oid_registry)
 endef
 
 $(eval $(call KernelPackage,oid-registry))
