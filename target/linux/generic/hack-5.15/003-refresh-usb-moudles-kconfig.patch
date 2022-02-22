@@ -1,0 +1,53 @@
+From d0692c11500d3de23d2f1ba77f22ebfc5d1deb2c Mon Sep 17 00:00:00 2001
+From: W_Y_CPP <383152993@qq.com>
+Date: Tue, 22 Feb 2022 22:09:24 +0900
+Subject: [PATCH] refresh usb moudles kconfig
+
+---
+ drivers/usb/gadget/Kconfig | 2 +-
+ drivers/usb/host/Kconfig   | 2 +-
+ drivers/usb/serial/Kconfig | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
+index 09ba3af12..5b5f57d15 100644
+--- a/drivers/usb/gadget/Kconfig
++++ b/drivers/usb/gadget/Kconfig
+@@ -143,7 +143,7 @@ source "drivers/usb/gadget/udc/Kconfig"
+ 
+ # composite based drivers
+ config USB_LIBCOMPOSITE
+-	tristate
++	tristate "Libcomposite"
+ 	select CONFIGFS_FS
+ 	depends on USB_GADGET
+ 
+diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
+index 79b2e79dd..ac3840aab 100644
+--- a/drivers/usb/host/Kconfig
++++ b/drivers/usb/host/Kconfig
+@@ -154,7 +154,7 @@ config USB_EHCI_TT_NEWSCHED
+ if USB_EHCI_HCD
+ 
+ config USB_EHCI_PCI
+-	tristate
++	tristate "USB ehci PCI"
+ 	depends on USB_PCI
+ 	default y
+ 
+diff --git a/drivers/usb/serial/Kconfig b/drivers/usb/serial/Kconfig
+index 67279c6bc..2e68ab037 100644
+--- a/drivers/usb/serial/Kconfig
++++ b/drivers/usb/serial/Kconfig
+@@ -553,7 +553,7 @@ config USB_SERIAL_XIRCOM
+ 	  module will be called keyspan_pda.
+ 
+ config USB_SERIAL_WWAN
+-	tristate
++	tristate "USB serial WAN"
+ 
+ config USB_SERIAL_OPTION
+ 	tristate "USB driver for GSM and CDMA modems"
+-- 
+2.17.1
+

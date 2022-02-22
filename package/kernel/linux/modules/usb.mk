@@ -57,7 +57,6 @@ $(eval $(call KernelPackage,usb-ledtrig-usbport))
 define KernelPackage/usb-phy-nop
   TITLE:=Support for USB NOP transceiver
   KCONFIG:=CONFIG_NOP_USB_XCEIV
-  HIDDEN:=1
   FILES:=$(LINUX_DIR)/drivers/usb/phy/phy-generic.ko
   AUTOLOAD:=$(call AutoLoad,21,phy-generic,1)
   $(call AddDepends/usb)
@@ -75,7 +74,6 @@ define KernelPackage/phy-ath79-usb
   KCONFIG:=CONFIG_PHY_AR7100_USB \
 	CONFIG_PHY_AR7200_USB
   DEPENDS:=@TARGET_ath79
-  HIDDEN:=1
   FILES:=$(LINUX_DIR)/drivers/phy/phy-ar7100-usb.ko \
 	$(LINUX_DIR)/drivers/phy/phy-ar7200-usb.ko
   AUTOLOAD:=$(call AutoLoad,21,phy-ar7100-usb phy-ar7200-usb,1)
@@ -92,7 +90,6 @@ $(eval $(call KernelPackage,phy-ath79-usb))
 define KernelPackage/usb-gadget
   TITLE:=USB Gadget support
   KCONFIG:=CONFIG_USB_GADGET
-  HIDDEN:=1
   FILES:=\
 	$(LINUX_DIR)/drivers/usb/gadget/udc/udc-core.ko
   AUTOLOAD:=$(call AutoLoad,21,udc-core,1)
@@ -110,7 +107,6 @@ define KernelPackage/usb-lib-composite
   TITLE:=USB lib composite
   KCONFIG:=CONFIG_USB_LIBCOMPOSITE
   DEPENDS:=+kmod-usb-gadget +kmod-fs-configfs
-  HIDDEN:=1
   FILES:=$(LINUX_DIR)/drivers/usb/gadget/libcomposite.ko
   AUTOLOAD:=$(call AutoLoad,50,libcomposite)
   $(call AddDepends/usb)
@@ -322,7 +318,6 @@ $(eval $(call KernelPackage,usb-ohci-pci))
 define KernelPackage/usb-bcma
   TITLE:=Support for BCMA USB controllers
   DEPENDS:=@USB_SUPPORT @TARGET_bcm47xx||TARGET_bcm53xx
-  HIDDEN:=1
   KCONFIG:=CONFIG_USB_HCD_BCMA
   FILES:= \
 	$(if $(CONFIG_USB_HCD_BCMA),$(LINUX_DIR)/drivers/usb/host/bcma-hcd.ko)
@@ -345,18 +340,17 @@ $(eval $(call KernelPackage,usb-fotg210))
 define KernelPackage/usb-ssb
   TITLE:=Support for SSB USB controllers
   DEPENDS:=@USB_SUPPORT @TARGET_bcm47xx
-  HIDDEN:=1
   KCONFIG:=CONFIG_USB_HCD_SSB
   FILES:= \
 	$(if $(CONFIG_USB_HCD_SSB),$(LINUX_DIR)/drivers/usb/host/ssb-hcd.ko)
   AUTOLOAD:=$(call AutoLoad,19,$(if $(CONFIG_USB_HCD_SSB),ssb-hcd),1)
   $(call AddDepends/usb)
 endef
+
 $(eval $(call KernelPackage,usb-ssb))
 
 define KernelPackage/usb-ehci
   TITLE:=EHCI controller support
-  HIDDEN:=1
   KCONFIG:= \
 	CONFIG_USB_EHCI_HCD
   FILES:= \
@@ -364,6 +358,7 @@ define KernelPackage/usb-ehci
   AUTOLOAD:=$(call AutoLoad,35,ehci-hcd,1)
   $(call AddDepends/usb)
 endef
+
 $(eval $(call KernelPackage,usb-ehci))
 
 define KernelPackage/usb2
@@ -915,7 +910,6 @@ define KernelPackage/usb-serial-wwan
   TITLE:=Support for GSM and CDMA modems
   KCONFIG:=CONFIG_USB_SERIAL_WWAN
   FILES:=$(LINUX_DIR)/drivers/usb/serial/usb_wwan.ko
-  HIDDEN:=1
   AUTOLOAD:=$(call AutoProbe,usb_wwan)
   $(call AddDepends/usb-serial)
 endef
@@ -1735,7 +1729,6 @@ $(eval $(call KernelPackage,usb-net2280))
 define KernelPackage/usb-roles
   TITLE:=USB Role Switch Library Module
   KCONFIG:=CONFIG_USB_ROLE_SWITCH
-  HIDDEN:=1
   FILES:=$(LINUX_DIR)/drivers/usb/roles/roles.ko
   $(call AddDepends/usb)
 endef
@@ -1752,7 +1745,6 @@ define KernelPackage/usb-xhci-hcd
   KCONFIG:= \
 	  CONFIG_USB_XHCI_HCD \
 	  CONFIG_USB_XHCI_HCD_DEBUGGING=n
-  HIDDEN:=1
   FILES:=$(LINUX_DIR)/drivers/usb/host/xhci-hcd.ko
   AUTOLOAD:=$(call AutoLoad,54,xhci-hcd,1)
   $(call AddDepends/usb)
@@ -1770,7 +1762,6 @@ define KernelPackage/usb-xhci-mtk
   TITLE:=xHCI support for MediaTek SoCs
   DEPENDS:=+kmod-usb-xhci-hcd
   KCONFIG:=CONFIG_USB_XHCI_MTK
-  HIDDEN:=1
   FILES:=$(LINUX_DIR)/drivers/usb/host/xhci-mtk.ko
   AUTOLOAD:=$(call AutoLoad,54,xhci-mtk,1)
   $(call AddDepends/usb)
@@ -1787,7 +1778,6 @@ define KernelPackage/usb-xhci-pci-renesas
   TITLE:=Support for additional Renesas xHCI controller with firmware
   DEPENDS:=@LINUX_5_10
   KCONFIG:=CONFIG_USB_XHCI_PCI_RENESAS
-  HIDDEN:=1
   FILES:=$(LINUX_DIR)/drivers/usb/host/xhci-pci-renesas.ko
   AUTOLOAD:=$(call AutoLoad,54,xhci-pci-renesas,1)
   $(call AddDepends/usb)
