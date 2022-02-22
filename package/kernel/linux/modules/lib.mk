@@ -170,7 +170,6 @@ $(eval $(call KernelPackage,lib-lz4))
 define KernelPackage/lib-raid6
   SUBMENU:=$(LIB_MENU)
   TITLE:=RAID6 algorithm support
-  HIDDEN:=1
   KCONFIG:=CONFIG_RAID6_PQ
   FILES:=$(LINUX_DIR)/lib/raid6/raid6_pq.ko
   AUTOLOAD:=$(call AutoProbe,raid6_pq)
@@ -186,7 +185,6 @@ $(eval $(call KernelPackage,lib-raid6))
 define KernelPackage/lib-xor
   SUBMENU:=$(LIB_MENU)
   TITLE:=XOR blocks algorithm support
-  HIDDEN:=1
   KCONFIG:=CONFIG_XOR_BLOCKS
 ifneq ($(wildcard $(LINUX_DIR)/arch/$(LINUX_KARCH)/lib/xor-neon.ko),)
   FILES:= \
@@ -227,7 +225,6 @@ $(eval $(call KernelPackage,lib-textsearch))
 define KernelPackage/lib-zlib-inflate
   SUBMENU:=$(LIB_MENU)
   TITLE:=Zlib support
-  HIDDEN:=1
   KCONFIG:=CONFIG_ZLIB_INFLATE
   FILES:=$(LINUX_DIR)/lib/zlib_inflate/zlib_inflate.ko
   AUTOLOAD:=$(call AutoProbe,zlib_inflate)
@@ -239,7 +236,6 @@ $(eval $(call KernelPackage,lib-zlib-inflate))
 define KernelPackage/lib-zlib-deflate
   SUBMENU:=$(LIB_MENU)
   TITLE:=Zlib support
-  HIDDEN:=1
   KCONFIG:=CONFIG_ZLIB_DEFLATE
   FILES:=$(LINUX_DIR)/lib/zlib_deflate/zlib_deflate.ko
   AUTOLOAD:=$(call AutoProbe,zlib_deflate)
@@ -266,8 +262,8 @@ define KernelPackage/asn1-decoder
   SUBMENU:=$(LIB_MENU)
   TITLE:=Simple ASN1 decoder
   KCONFIG:= CONFIG_ASN1
-  HIDDEN:=1
   FILES:=$(LINUX_DIR)/lib/asn1_decoder.ko
+  AUTOLOAD:=$(call AutoProbe,asn1_decoder)
 endef
 
 $(eval $(call KernelPackage,asn1-decoder))
@@ -276,9 +272,10 @@ $(eval $(call KernelPackage,asn1-decoder))
 define KernelPackage/asn1-encoder
   SUBMENU:=$(LIB_MENU)
   TITLE:=Simple ASN1 encoder
+  DEPENDS:=@LINUX_5_15
   KCONFIG:= CONFIG_ASN1
-  HIDDEN:=1
   FILES:=$(LINUX_DIR)/lib/asn1_encoder.ko
+  AUTOLOAD:=$(call AutoProbe,asn1_encoder)
 endef
 
 $(eval $(call KernelPackage,asn1-encoder))
@@ -288,8 +285,8 @@ define KernelPackage/oid-registry
   SUBMENU:=$(LIB_MENU)
   TITLE:=OID Registry
   KCONFIG:= CONFIG_OID_REGISTRY
-  HIDDEN:=1
   FILES:=$(LINUX_DIR)/lib/oid_registry.ko
+  AUTOLOAD:=$(call AutoProbe,oid-registry)
 endef
 
 $(eval $(call KernelPackage,oid-registry))

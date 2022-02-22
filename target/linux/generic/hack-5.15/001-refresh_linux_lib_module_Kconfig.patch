@@ -1,0 +1,75 @@
+From 846d26d3ae59fa5c2114ca7cde37d860c71d2c99 Mon Sep 17 00:00:00 2001
+From: W_Y_CPP <383152993@qq.com>
+Date: Mon, 21 Feb 2022 22:43:09 -0500
+Subject: [PATCH] refresh linux module Kconfig
+
+---
+ crypto/Kconfig |  2 +-
+ init/Kconfig   |  2 +-
+ lib/Kconfig    | 14 +++++++-------
+ 3 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/crypto/Kconfig b/crypto/Kconfig
+index ce60ec30e..868236029 100644
+--- a/crypto/Kconfig
++++ b/crypto/Kconfig
+@@ -3,7 +3,7 @@
+ # Generic algorithms support
+ #
+ config XOR_BLOCKS
+-	tristate
++	tristate "Xor blocks"
+ 
+ #
+ # async_tx api: hardware offloaded memory transfer/transform support
+diff --git a/init/Kconfig b/init/Kconfig
+index f23e90d99..68cb96820 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -2203,7 +2203,7 @@ config PADATA
+ 	bool
+ 
+ config ASN1
+-	tristate
++	tristate "Ans1"
+ 	help
+ 	  Build a simple ASN.1 grammar compiler that produces a bytecode output
+ 	  that can be interpreted by the ASN.1 stream decoder and used to
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 3321d04df..70d19b387 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -9,7 +9,7 @@ config BINARY_PRINTF
+ menu "Library routines"
+ 
+ config RAID6_PQ
+-	tristate
++	tristate "Raid6_PQ"
+ 
+ config RAID6_PQ_BENCHMARK
+ 	bool "Automatically choose fastest RAID6 PQ functions"
+@@ -272,10 +272,10 @@ config 842_DECOMPRESS
+ 	tristate
+ 
+ config ZLIB_INFLATE
+-	tristate
++	tristate "Zlib inflate"
+ 
+ config ZLIB_DEFLATE
+-	tristate
++	tristate "Zlib deflate"
+ 	select BITREVERSE
+ 
+ config LZO_COMPRESS
+@@ -567,7 +567,7 @@ config LIBFDT
+ 	bool
+ 
+ config OID_REGISTRY
+-	tristate
++	tristate "Oid registry"
+ 	help
+ 	  Enable fast lookup object identifier registry.
+ 
+-- 
+2.17.1
+
