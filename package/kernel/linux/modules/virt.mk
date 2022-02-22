@@ -8,7 +8,6 @@ define KernelPackage/irqbypass
   SUBMENU:=Virtualization
   TITLE:=IRQ offload/bypass manager
   KCONFIG:=CONFIG_IRQ_BYPASS_MANAGER
-  HIDDEN:=1
   FILES:= $(LINUX_DIR)/virt/lib/irqbypass.ko
   AUTOLOAD:=$(call AutoProbe,irqbypass.ko)
 endef
