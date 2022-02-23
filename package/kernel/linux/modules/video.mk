@@ -249,7 +249,7 @@ define KernelPackage/drm
 	CONFIG_DRM_PANEL_ORIENTATION_QUIRKS=y	\
 	CONFIG_DRM_FBDEV_EMULATION=y \
 	CONFIG_DRM_FBDEV_OVERALLOC=100 \
-	CONFIG_HDMI
+	CONFIG_HDMI=y
   FILES:= \
 	$(LINUX_DIR)/drivers/gpu/drm/drm.ko \
 	$(LINUX_DIR)/drivers/gpu/drm/drm_panel_orientation_quirks.ko
