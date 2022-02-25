@@ -41,6 +41,7 @@ define KernelPackage/fs-ksmbd
 		+kmod-oid-registry
 endef
 
+
 # The last two DEPENDS are hacks in order to get CONFIG_ASN1 and CONFIG_OID_REGISTRY
 # which it seems can't be selected independently. Some bug in either base or upstream.
 
