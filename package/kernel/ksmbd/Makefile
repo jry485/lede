@@ -37,8 +37,8 @@ define KernelPackage/fs-ksmbd
 		+kmod-crypto-aead \
 		+kmod-crypto-ccm \
 		+kmod-crypto-gcm \
-		+kmod-asn1-decoder \
-		+kmod-oid-registry
+		+kmod-fs-nfsd \
+		+kmod-nf-nathelper-extra
 endef
 
 
