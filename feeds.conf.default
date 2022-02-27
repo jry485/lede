@@ -4,7 +4,7 @@ src-git dockerman https://github.com/WYC-2020/luci-app-dockerman
 src-git luci https://github.com/WYC-2020/luci
 src-git routing https://git.openwrt.org/feed/routing.git
 src-git telephony https://git.openwrt.org/feed/telephony.git
-src-git openclash https://github.com/vernesong/OpenClash
+src-git openclash https://github.com/WYC-2020/OpenClash
 src-git passwall https://github.com/WYC-2020/openwrt-passwall
 src-git helloworld https://github.com/WYC-2020/helloworld
 src-git openwrt_upx https://github.com/WYC-2020/openwrt-upx
