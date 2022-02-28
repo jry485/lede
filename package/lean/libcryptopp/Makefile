@@ -19,13 +19,13 @@ define Package/libcryptopp
   CATEGORY:=Libraries
   TITLE:=Free C++ class library of cryptographic schemes
   URL:=https://packages.debian.org/sid/libcrypto++-dev
-  DEPENDS:=+libpthread +libstdcpp
+  DEPENDS:=+libpthread 
 endef
 
 define Package/libcryptopp/description
-  Crypto++ is library for creating C++ programs which use cryptographic
-  algorithms. The library uses a Pipes & Filters architecture with heavy
-  use of templates and abstract base classes.
+  Crypto++ is library for creating C++ programs which use cryptographic algorithms.
+  The library uses a Pipes & Filters architecture with heavy use of templates and
+  abstract base classes.
 endef
 
 TARGET_CFLAGS += $(FPIC)
