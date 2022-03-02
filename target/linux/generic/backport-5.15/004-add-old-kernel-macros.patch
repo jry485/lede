@@ -1,0 +1,26 @@
+From 9f3037d031c3945209ba355af29f8c70d4d09ceb Mon Sep 17 00:00:00 2001
+From: W_Y_CPP <383152993@qq.com>
+Date: Tue, 1 Mar 2022 21:01:57 -0500
+Subject: [PATCH] add missing macro
+
+---
+ include/linux/firmware.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/include/linux/firmware.h b/include/linux/firmware.h
+index 25109192c..f1b38c389 100644
+--- a/include/linux/firmware.h
++++ b/include/linux/firmware.h
+@@ -9,6 +9,9 @@
+ #define FW_ACTION_NOUEVENT 0
+ #define FW_ACTION_UEVENT 1
+ 
++#define FW_ACTION_NOHOTPLUG FW_ACTION_NOUEVENT
++#define FW_ACTION_HOTPLUG FW_ACTION_UEVENT
++
+ struct firmware {
+ 	size_t size;
+ 	const u8 *data;
+-- 
+2.17.1
+
