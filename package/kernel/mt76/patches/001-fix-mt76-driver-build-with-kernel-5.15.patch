@@ -1,34 +1,35 @@
-From b450c426085843114e443fd63c342f52544d00f3 Mon Sep 17 00:00:00 2001
+From 6d4448e69c96b4ec747faecb8330b69b97048451 Mon Sep 17 00:00:00 2001
 From: W_Y_CPP <383152993@qq.com>
-Date: Mon, 28 Feb 2022 21:19:03 -0500
-Subject: [PATCH] fix mt76 driver build with kernel 5.15
+Date: Wed, 2 Mar 2022 05:22:27 -0500
+Subject: [PATCH] 1
 
 ---
- eeprom.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ eeprom.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/eeprom.c b/eeprom.c
-index cc74c372d..975a0c0bd 100644
+index cc74c37..194ff63 100644
 --- a/eeprom.c
 +++ b/eeprom.c
-@@ -95,10 +95,15 @@ mt76_eeprom_override(struct mt76_phy *phy)
+@@ -95,10 +95,17 @@ mt76_eeprom_override(struct mt76_phy *phy)
  	struct device_node *np = dev->dev->of_node;
  	const u8 *mac = NULL;
  
 +#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 0) 
-+	if (np)
+ 	if (np)
 +		of_get_mac_address(np, phy->macaddr);
 +#else
- 	if (np)
++	if (np)
++	{
  		mac = of_get_mac_address(np);
 -	if (!IS_ERR_OR_NULL(mac))
 -		ether_addr_copy(phy->macaddr, mac);
 +		if (!IS_ERR_OR_NULL(mac))
 +			ether_addr_copy(phy->macaddr, mac);
++	}
 +#endif
  #endif
  
  	if (!is_valid_ether_addr(phy->macaddr)) {
 -- 
 2.17.1
-
