@@ -1168,6 +1168,17 @@ dnsmasq_start()
 	procd_add_jail_mount_rw /var/run/dnsmasq/ $leasefile
 
 	procd_close_instance
+
+	config_get_bool dns_redirect "$cfg" dns_redirect 0
+	config_get dns_port "$cfg" port 53
+	sed -i '/REDIRECT --to-ports 53/d' /etc/firewall.user 2>/dev/null
+	[ $dns_redirect = 1 ] && {
+		echo 'iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user 2>/dev/null
+		echo 'iptables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user 2>/dev/null
+		echo '[ -n "$(command -v ip6tables)" ] && ip6tables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user 2>/dev/null
+		echo '[ -n "$(command -v ip6tables)" ] && ip6tables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user 2>/dev/null
+	}
+	/etc/init.d/firewall restart
 }
 
 dnsmasq_stop()
@@ -1183,6 +1194,16 @@ dnsmasq_stop()
 	[ "$localuse" -gt 0 ] && ln -sf "/tmp/resolv.conf.d/resolv.conf.auto" /tmp/resolv.conf
 
 	rm -f ${BASEDHCPSTAMPFILE}.${cfg}.*.dhcp
+}
+
+iptables_clear()
+{
+	for ipt in "iptables -t nat -w" "ip6tables -t nat -w"; do
+		for i in $(seq 1 $($ipt -nL PREROUTING | grep -c "Dnsmasq")); do
+			local index=$($ipt --line-number -nL PREROUTING | grep "Dnsmasq" | head -1 | awk '{print $1}')
+			$ipt -D PREROUTING $index 2>/dev/null
+		done
+	done
 }
 
 add_interface_trigger()
@@ -1214,7 +1235,7 @@ start_service() {
 	local instance="$1"
 	local instance_found=0
 	local first_instance=""
-
+	iptables_clear
 	. /lib/functions/network.sh
 
 	config_cb() {
@@ -1281,4 +1302,5 @@ stop_service() {
 	else
 		config_foreach dnsmasq_stop dnsmasq
 	fi
+	iptables_clear
 }
