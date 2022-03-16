@@ -18,7 +18,7 @@ HOST_BUILD_DIR:=$(BUILD_DIR_HOST)/$(PKG_NAME)-$(PKG_VERSION)
 include $(INCLUDE_DIR)/host-build.mk
 
 HOSTCC :=gcc
-HOST_CFLAGS +=$(CPPFLAGS) -std=gnu89 -fPIC
+HOST_CFLAGS +=-std=gnu89 -std=c90 -fPIC -Wno-error=implicit-function-declaration
 
 define Host/Prepare
 	$(Host/Prepare/Default)
@@ -28,7 +28,7 @@ endef
 define Host/Configure
 	(cd $(HOST_BUILD_DIR); \
 	CC="$(HOSTCC)" \
-	CPPFLAGS="$(HOST_CFLAGS)" \
+	CFLAGS="$(HOST_CFLAGS)" \
 	./configure --prefix=$(STAGING_DIR_HOST) \
 	);
 	$(call Host/Configure/Default)
