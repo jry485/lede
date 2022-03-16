@@ -1,5 +1,25 @@
 --- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
 +++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
+@@ -7,6 +7,7 @@
+ #include <linux/rhashtable.h>
+ #include <linux/if_ether.h>
+ #include <linux/ip.h>
++#include <linux/ipv6.h>
+ #include <net/flow_offload.h>
+ #include <net/pkt_cls.h>
+ #include <net/dsa.h>
+@@ -20,6 +21,11 @@ struct mtk_flow_data {
+ 			__be32 src_addr;
+ 			__be32 dst_addr;
+ 		} v4;
++
++		struct {
++			struct in6_addr src_addr;
++			struct in6_addr dst_addr;
++		} v6;
+ 	};
+ 
+ 	__be16 src_port;
 @@ -64,6 +70,14 @@ mtk_flow_set_ipv4_addr(struct mtk_foe_en
  					    data->v4.dst_addr, data->dst_port);
  }
