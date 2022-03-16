@@ -7,6 +7,5 @@ src-git telephony https://git.openwrt.org/feed/telephony.git
 src-git openclash https://github.com/WYC-2020/OpenClash
 src-git passwall https://github.com/WYC-2020/openwrt-passwall
 src-git helloworld https://github.com/WYC-2020/helloworld
-src-git openwrt_upx https://github.com/WYC-2020/openwrt-upx
 src-git kenzok8 https://github.com/WYC-2020/openwrt-packages
 src-git openwrt_subconverter https://github.com/WYC-2020/openwrt-subconverter
