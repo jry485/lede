@@ -55,7 +55,7 @@ make -j$(($(nproc) + 1)) V=s
 
 编译完成后输出路径：bin/targets
 
-English Version: How to make your Openwrt firmware.
+How to make your Openwrt firmware.
 -
 Note:
 --
@@ -97,11 +97,6 @@ To build your own firmware you need to have access to a Linux, BSD or MacOSX sys
 (case-sensitive filesystem required). Cygwin will not be supported because of
 the lack of case sensitiveness in the file system.
 
-## Note: Addition Lean's private package source code in `./package/lean` directory. Use it under GPL v3.
-
-## GPLv3 is compatible with more licenses than GPLv2: it allows you to make combinations with code that has specific kinds of additional requirements that are not in GPLv3 itself. Section 7 has more information about this, including the list of additional requirements that are permitted.
-=======
-=======
 如果你使用WSL或WSL2进行编译：
 ------
 由于wsl的PATH路径中包含带有空格的Windows路径，有可能会导致编译失败，请在将make -j1 V=s或make -j$(($(nproc) + 1)) V=s改为
@@ -148,20 +143,6 @@ source ~/.bashrc
 ```
 
 然后输入 bash 命令，进入bash shell，就可以和 Linux 一样正常编译了
-
-------
-
-特别提示：
-------
-1. 源代码中绝不含任何后门和可以监控或者劫持你的 HTTPS 的闭源软件， SSL 安全是互联网最后的壁垒。安全干净才是固件应该做到的；
-
-2. 如有技术问题需要讨论，欢迎加入 QQ 讨论群： OP 共享技术交流群 ,号码 297253733 ，加群链接: 点击链接加入群聊【 OP 共享技术交流群】：[点击加入](https://jq.qq.com/?_wv=1027&k=5yCRuXL "OP共享技术交流群")
-
-3. 想学习 OpenWrt 开发，但是摸不着门道？自学没毅力？基础太差？怕太难学不会？跟着佐大学 OpenWrt 开发入门培训班助你能学有所成
-报名地址：[点击报名](http://forgotfun.org/2018/04/openwrt-training-2018.html "报名")
-
-如何为openwrt中的某个模块生成PKG_MIRROR_HASH
-------
 
 第一种方法(自动生成):
 ------
