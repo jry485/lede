@@ -17,8 +17,13 @@ HOST_BUILD_DIR:=$(BUILD_DIR_HOST)/$(PKG_NAME)-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/host-build.mk
 
+ifeq ($(HOST_OS),Darwin)
+HOSTCC :=gcc-11
+else
 HOSTCC :=gcc
-HOST_CFLAGS +=-std=gnu89 -std=c90 -fPIC -Wno-error=implicit-function-declaration
+endif
+
+HOST_CFLAGS +=-std=gnu89
 
 define Host/Prepare
 	$(Host/Prepare/Default)
