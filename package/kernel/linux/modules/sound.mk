@@ -398,6 +398,7 @@ define KernelPackage/sound-hda-codec-si3054
   SUBMENU:=$(SOUND_MENU)
   TITLE:=HD Audio Silicon Labs 3054 Codec
   KCONFIG:= \
+	SND_HDA=y \
 	CONFIG_SND_HDA_CODEC_SI3054
   FILES:= \
 	$(LINUX_DIR)/sound/pci/hda/snd-hda-codec-si3054.ko
