@@ -412,10 +412,10 @@ define KernelPackage/drm-nouveau
   TITLE:=nouveau DRM support
   DEPENDS:=@TARGET_x86 @DISPLAY_SUPPORT +kmod-drm-kms-helper
   KCONFIG:=CONFIG_DRM_NOUVEAU \
-	NOUVEAU_DEBUG=5 \
-	NOUVEAU_DEBUG_DEFAULT=3 \
-	NOUVEAU_DEBUG_MMU=n \
-	DRM_NOUVEAU_BACKLIGHT=y
+	CONFIG_NOUVEAU_DEBUG=5 \
+	CONFIG_NOUVEAU_DEBUG_DEFAULT=3 \
+	CONFIG_NOUVEAU_DEBUG_MMU=n \
+	CONFIG_DRM_NOUVEAU_BACKLIGHT=y
   FILES:=\
 	$(LINUX_DIR)/drivers/gpu/drm/nouveau/nouveau.ko \
 	$(LINUX_DIR)/drivers/platform/x86/wmi.ko
