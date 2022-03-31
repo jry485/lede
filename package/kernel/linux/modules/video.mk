@@ -42,7 +42,9 @@ define KernelPackage/backlight-pwm
 	SUBMENU:=$(VIDEO_MENU)
 	TITLE:=PWM Backlight support
 	DEPENDS:=+kmod-backlight
-	KCONFIG:=CONFIG_BACKLIGHT_PWM
+	KCONFIG:=\
+		CONFIG_PWM=y \
+		CONFIG_BACKLIGHT_PWM
 	FILES:=$(LINUX_DIR)/drivers/video/backlight/pwm_bl.ko
 	AUTOLOAD:=$(call AutoProbe,video pwm_bl)
 endef
