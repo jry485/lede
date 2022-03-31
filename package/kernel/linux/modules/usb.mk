@@ -1760,7 +1760,7 @@ $(eval $(call KernelPackage,usb-xhci-hcd))
 
 define KernelPackage/usb-xhci-mtk
   TITLE:=xHCI support for MediaTek SoCs
-  DEPENDS:=+kmod-usb-xhci-hcd
+  DEPENDS:=@TARGET_ramips_mt7621 +kmod-usb-xhci-hcd
   KCONFIG:=CONFIG_USB_XHCI_MTK
   FILES:=$(LINUX_DIR)/drivers/usb/host/xhci-mtk.ko
   AUTOLOAD:=$(call AutoLoad,54,xhci-mtk,1)
