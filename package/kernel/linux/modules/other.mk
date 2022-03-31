@@ -220,7 +220,12 @@ $(eval $(call KernelPackage,gpio-mcp23s08))
 define KernelPackage/gpio-nxp-74hc164
   SUBMENU:=$(OTHER_MENU)
   TITLE:=NXP 74HC164 GPIO expander support
-  KCONFIG:=CONFIG_GPIO_74X164
+  KCONFIG:= \
+	CONFIG_PCI=y \
+	CONFIG_HAS_IOMEM=y \
+	CONFIG_OF=y \
+	CONFIG_OF_GPIO=y \
+	CONFIG_GPIO_74X164
   FILES:=$(LINUX_DIR)/drivers/gpio/gpio-74x164.ko
   AUTOLOAD:=$(call AutoProbe,gpio-74x164)
 endef
