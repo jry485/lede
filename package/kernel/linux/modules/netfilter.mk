@@ -566,6 +566,7 @@ $(eval $(call KernelPackage,nf-nathelper-extra))
 
 define KernelPackage/ipt-ulog
   TITLE:=Module for user-space packet logging
+    DEPENDS:=+kmod-nfnetlink
   KCONFIG:=$(KCONFIG_IPT_ULOG)
   FILES:=$(foreach mod,$(IPT_ULOG-m),$(LINUX_DIR)/net/$(mod).ko)
   AUTOLOAD:=$(call AutoProbe,$(notdir $(IPT_ULOG-m)))
