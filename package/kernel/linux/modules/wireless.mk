@@ -31,6 +31,7 @@ define KernelPackage/net-rtl8192su
   TITLE:=RTL8192SU support (staging)
   DEPENDS:=@USB_SUPPORT +@DRIVER_WEXT_SUPPORT +kmod-usb-core +rtl8192su-firmware
   KCONFIG:=\
+	CONFIG_CFG80211=y \
 	CONFIG_STAGING=y \
 	CONFIG_R8712U
   FILES:=$(LINUX_DIR)/drivers/staging/rtl8712/r8712u.ko
