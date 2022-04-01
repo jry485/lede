@@ -223,7 +223,7 @@ $(eval $(call nf_add,NF_NATHELPER_EXTRA,CONFIG_NF_NAT_IRC, $(P_XT)nf_nat_irc))
 
 # ulog
 
-$(eval $(call nf_add,IPT_ULOG,CONFIG_IP_NF_TARGET_ULOG, $(P_V4)ipt_ULOG))
+$(eval $(call nf_add,IPT_ULOG,CONFIG_NETFILTER_NETLINK_LOG, $(P_XT)nfnetlink_log))
 
 
 # nflog
