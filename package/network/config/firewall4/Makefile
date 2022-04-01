@@ -21,7 +21,7 @@ define Package/firewall4
   SECTION:=net
   CATEGORY:=Base system
   TITLE:=OpenWrt 4th gen firewall
-  DEPENDS:=+ucode +ucode-mod-fs +ucode-mod-uci +ucode-mod-ubus +kmod-nft-core +kmod-nft-fib +kmod-nft-nat +kmod-nft-nat6 +nftables-json
+  DEPENDS:=+ucode +ucode-mod-fs +ucode-mod-uci +ucode-mod-ubus +kmod-nft-core +kmod-nft-fib +kmod-nft-nat +nftables-json
   CONFLICTS:=firewall kmod-ipt-nat
 endef
 
