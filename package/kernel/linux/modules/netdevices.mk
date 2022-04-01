@@ -1259,8 +1259,13 @@ define KernelPackage/sfp
   TITLE:=SFP cage support
   DEPENDS:=+kmod-i2c-core +kmod-hwmon-core +kmod-phylink
   KCONFIG:= \
-	CONFIG_SFP \
-	CONFIG_MDIO_I2C
+	CONFIG_ACPI_I2C_OPREGION=y \
+	CONFIG_I2C_BOARDINFO=y \
+	CONFIG_MDIO_I2C \
+	CONFIG_MDIO_BUS=y \
+	CONFIG_MDIO_DEVICE=y \
+	CONFIG_RTC_I2C_AND_SPI=y \
+	CONFIG_SFP 
   FILES:= \
 	$(LINUX_DIR)/drivers/net/phy/sfp.ko \
 	$(LINUX_DIR)/drivers/net/phy/mdio-i2c.ko@lt5.10 \
