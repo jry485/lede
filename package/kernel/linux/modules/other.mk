@@ -654,23 +654,6 @@ endef
 
 $(eval $(call KernelPackage,rtc-pcf2127))
 
-define KernelPackage/rtc-pt7c4338
-  SUBMENU:=$(OTHER_MENU)
-  TITLE:=Pericom PT7C4338 RTC support
-  DEFAULT:=m if ALL_KMODS && RTC_SUPPORT
-  DEPENDS:=+kmod-i2c-core
-  KCONFIG:=CONFIG_RTC_DRV_PT7C4338 \
-	CONFIG_RTC_CLASS=y
-  FILES:=$(LINUX_DIR)/drivers/rtc/rtc-pt7c4338.ko
-  AUTOLOAD:=$(call AutoProbe,rtc-pt7c4338)
-endef
-
-define KernelPackage/rtc-pt7c4338/description
- Kernel module for Pericom PT7C4338 i2c RTC chip
-endef
-
-$(eval $(call KernelPackage,rtc-pt7c4338))
-
 define KernelPackage/rtc-rs5c372a
   SUBMENU:=$(OTHER_MENU)
   TITLE:=Ricoh R2025S/D, RS5C372A/B, RV5C386, RV5C387A
@@ -726,7 +709,9 @@ $(eval $(call KernelPackage,rtc-s35390a))
 define KernelPackage/mtdtests
   SUBMENU:=$(OTHER_MENU)
   TITLE:=MTD subsystem tests
-  KCONFIG:=CONFIG_MTD_TESTS
+  KCONFIG:= \
+	CONFIG_MTD=y \
+	CONFIG_MTD_TESTS
   FILES:=\
 	$(LINUX_DIR)/drivers/mtd/tests/mtd_nandecctest.ko \
 	$(LINUX_DIR)/drivers/mtd/tests/mtd_oobtest.ko \
@@ -748,7 +733,9 @@ $(eval $(call KernelPackage,mtdtests))
 define KernelPackage/mtdoops
   SUBMENU:=$(OTHER_MENU)
   TITLE:=Log panic/oops to an MTD buffer
-  KCONFIG:=CONFIG_MTD_OOPS
+  KCONFIG:= \
+	CONFIG_MTD=y \
+	CONFIG_MTD_OOPS
   FILES:=$(LINUX_DIR)/drivers/mtd/mtdoops.ko
 endef
 
@@ -762,9 +749,11 @@ $(eval $(call KernelPackage,mtdoops))
 define KernelPackage/mtdram
   SUBMENU:=$(OTHER_MENU)
   TITLE:=Test MTD driver using RAM
-  KCONFIG:=CONFIG_MTD_MTDRAM \
-    CONFIG_MTDRAM_TOTAL_SIZE=4096 \
-    CONFIG_MTDRAM_ERASE_SIZE=128
+  KCONFIG:= \
+	CONFIG_MTD=y \
+	CONFIG_MTD_MTDRAM \
+    	CONFIG_MTDRAM_TOTAL_SIZE=4096 \
+    	CONFIG_MTDRAM_ERASE_SIZE=128
   FILES:=$(LINUX_DIR)/drivers/mtd/devices/mtdram.ko
 endef
 
