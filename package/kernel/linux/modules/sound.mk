@@ -433,7 +433,8 @@ define KernelPackage/snd-hda-codec-si3054
   SUBMENU:=$(SOUND_MENU)
   TITLE:=HD Audio Cirrus Logic HDA bridge
   KCONFIG:= \
-	CONFIG_SND_HDA_CODEC_CS8409
+	CONFIG_SND_HDA=y \
+	CONFIG_SND_HDA_CODEC_SI3054
   FILES:= \
 	$(LINUX_DIR)/sound/pci/hda/snd-hda-codec-si3054.ko
   AUTOLOAD:=$(call AutoProbe,snd-hda-codec-si3054)
