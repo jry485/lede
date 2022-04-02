@@ -109,7 +109,7 @@
 +		if (!waitonly) {
 +			lseek(fd, 0, SEEK_SET);
 +			ftruncate(fd, 0);
-+			snprintf(sizeof(pidstr), pidstr, "%ld\n", pid);
++			snprintf(pidstr,sizeof(pidstr),"%ld\n", pid);
 +			write(fd, pidstr, strlen(pidstr));
 +			close(fd);
 +		}
