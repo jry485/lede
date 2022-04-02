@@ -56,12 +56,12 @@
 +static int do_unlock(void)
 +{
 +	FILE *f;
-+	int i;
++	long i;
 +
 +	if ((f = fopen(file, "r")) == NULL)
 +		return 0;
 +
-+	fscanf(f, "%d", &i);
++	fscanf(f, "%ld", &i);
 +	if (i > 0)
 +		kill(i, SIGTERM);
 +
