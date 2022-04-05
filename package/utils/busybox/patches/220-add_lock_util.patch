@@ -56,12 +56,12 @@
 +static int do_unlock(void)
 +{
 +	FILE *f;
-+	int i;
++	long i;
 +
 +	if ((f = fopen(file, "r")) == NULL)
 +		return 0;
 +
-+	fscanf(f, "%d", &i);
++	fscanf(f, "%ld", &i);
 +	if (i > 0)
 +		kill(i, SIGTERM);
 +
@@ -72,9 +72,9 @@
 +
 +static int do_lock(void)
 +{
-+	pid_t pid;
++	long pid;
 +	int flags;
-+	char pidstr[12];
++	char pidstr[254];
 +
 +	if ((fd = open(file, O_RDWR | O_CREAT | O_EXCL, 0700)) < 0) {
 +		if ((fd = open(file, O_RDWR)) < 0) {
@@ -109,7 +109,7 @@
 +		if (!waitonly) {
 +			lseek(fd, 0, SEEK_SET);
 +			ftruncate(fd, 0);
-+			snprintf(sizeof(pidstr), pidstr, "%d\n", pid);
++			snprintf(pidstr,sizeof(pidstr),"%ld\n", pid);
 +			write(fd, pidstr, strlen(pidstr));
 +			close(fd);
 +		}
