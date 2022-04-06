@@ -6,10 +6,10 @@
 blkdev=`dirname $DEVPATH`
 basename=`basename $blkdev`
 device=`basename $DEVPATH`
-skip=`block info | sed 's/\(.*\): .*/\1/' | grep -q $device ; echo $?`
+skip=`block info | grep -vE '(f2fs|kernel|squashfs)' | sed 's/\(.*\): .*/\1/' | grep -q $device ; echo $?`
 path=$DEVPATH
 
-if [ $basename != "block" ] && [ $device != "sda128" ] && [ -z "${device##sd*}" ] && [ $skip -eq 1 ]; then
+if [ $basename != "block" ] && [ -z "${device##sd*}" ] && [ $skip -eq 1 ]; then
 	mntpnt=$device
 	case "$ACTION" in
 		add)

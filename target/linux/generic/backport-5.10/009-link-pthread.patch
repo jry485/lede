@@ -1,0 +1,25 @@
+From d987fb6647ef6c12e6a37af9e6d476be78d30168 Mon Sep 17 00:00:00 2001
+From: W_Y_CPP <383152993@qq.com>
+Date: Fri, 1 Apr 2022 22:40:28 +0900
+Subject: [PATCH] add link pthread
+
+---
+ scripts/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/Makefile b/scripts/Makefile
+index b4b7d8b58..e9f31ea6c 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -10,7 +10,7 @@
+ 
+ HOST_EXTRACFLAGS += -I$(srctree)/tools/include
+ 
+-CRYPTO_LIBS = $(shell pkg-config --libs libcrypto 2> /dev/null || echo -lcrypto)
++CRYPTO_LIBS = $(shell pkg-config --libs libcrypto 2> /dev/null || echo -lcrypto) -lpthread
+ CRYPTO_CFLAGS = $(shell pkg-config --cflags libcrypto 2> /dev/null)
+ 
+ hostprogs-$(CONFIG_BUILD_BIN2C)  += bin2c
+-- 
+2.17.1
+
