@@ -18,7 +18,7 @@ diff --git a/include/linux/if_bridge.h b/include/linux/if_bridge.h
 index 509e18c7e..d0ea4afbb 100644
 --- a/include/linux/if_bridge.h
 +++ b/include/linux/if_bridge.h
-@@ -68,6 +68,9 @@ void brioctl_set(int (*hook)(struct net *net, struct net_bridge *br,
+@@ -70,6 +70,9 @@ void brioctl_set(int (*hook)(struct net
  int br_ioctl_call(struct net *net, struct net_bridge *br, unsigned int cmd,
  		  struct ifreq *ifr, void __user *uarg);
  
@@ -89,8 +89,8 @@ diff --git a/net/bridge/br_if.c b/net/bridge/br_if.c
 index 4a02f8bb2..8a85ab557 100644
 --- a/net/bridge/br_if.c
 +++ b/net/bridge/br_if.c
-@@ -773,6 +773,28 @@ void br_port_flags_change(struct net_bridge_port *p, unsigned long mask)
- 		br_recalculate_neigh_suppress_enabled(br);
+@@ -777,6 +777,28 @@ void br_port_flags_change(struct net_bri
+ 		br_offload_port_state(p);
  }
  
 +void br_dev_update_stats(struct net_device *dev,
@@ -122,7 +122,7 @@ diff --git a/net/core/dev.c b/net/core/dev.c
 index e0878a500..4a9846b64 100644
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -3574,9 +3574,17 @@ static int xmit_one(struct sk_buff *skb, struct net_device *dev,
+@@ -3578,9 +3578,17 @@ static int xmit_one(struct sk_buff *skb,
  {
  	unsigned int len;
  	int rc;
@@ -141,7 +141,7 @@ index e0878a500..4a9846b64 100644
  
  #ifdef CONFIG_ETHERNET_PACKET_MANGLE
  	if (dev->eth_mangle_tx && !(skb = dev->eth_mangle_tx(dev, skb)))
-@@ -5198,6 +5205,11 @@ void netdev_rx_handler_unregister(struct net_device *dev)
+@@ -5207,6 +5215,11 @@ void netdev_rx_handler_unregister(struct
  }
  EXPORT_SYMBOL_GPL(netdev_rx_handler_unregister);
  
@@ -153,7 +153,7 @@ index e0878a500..4a9846b64 100644
  /*
   * Limit the use of PFMEMALLOC reserves to those protocols that implement
   * the special handling of PFMEMALLOC skbs.
-@@ -5246,6 +5258,10 @@ static int __netif_receive_skb_core(struct sk_buff **pskb, bool pfmemalloc,
+@@ -5255,6 +5268,10 @@ static int __netif_receive_skb_core(stru
  	int ret = NET_RX_DROP;
  	__be16 type;
  
@@ -164,7 +164,7 @@ index e0878a500..4a9846b64 100644
  	net_timestamp_check(!netdev_tstamp_prequeue, skb);
  
  	trace_netif_receive_skb(skb);
-@@ -5283,6 +5299,15 @@ another_round:
+@@ -5292,6 +5309,15 @@ another_round:
  			goto out;
  	}
  
