@@ -1,5 +1,5 @@
 src-git smartdns https://github.com/WYC-2020/smartdns
-src-git packages https://github.com/WYC-2020/packages
+src-git packages https://github.com/jry485/packages
 src-git dockerman https://github.com/WYC-2020/luci-app-dockerman
 src-git luci https://github.com/WYC-2020/luci
 src-git routing https://git.openwrt.org/feed/routing.git
